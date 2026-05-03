@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditi Deshpande - Product Designer</title>
+  <meta name="description" content="Aditi Deshpande - Product Designer specializing in interaction design, UX research, accessibility, and AI-integrated workflows." />
+  <meta name="theme-color" content="#F0EDE6" />
+  <meta name="color-scheme" content="light dark" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Aditi Deshpande - Product Designer" />
+  <meta property="og:description" content="Selected work in interaction design, UX research, accessibility, and AI-integrated workflows." />
+  <meta property="og:image" content="./assets/img/about/about-fa7bd9c9-1536.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aditi Deshpande - Product Designer" />
+  <meta name="twitter:description" content="Selected work in interaction design, UX research, accessibility, and AI-integrated workflows." />
+
+  <link rel="canonical" href="https://aditi-deshpande.example/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23F0EDE6'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' font-family='Cormorant Garamond, serif' font-size='44' font-weight='700' fill='%231a1a1a' dominant-baseline='middle'%3Ea%3C/text%3E%3Ccircle cx='40' cy='44' r='3.5' fill='%23C4502A'/%3E%3C/svg%3E" type="image/svg+xml" />
+
+  <script>
+    // Pre-paint theme: apply saved preference before first paint to prevent FOUC.
+    // We tag <html> here (so the critical-CSS :root.dark rule kicks in immediately);
+    // a second inline script at the start of <body> mirrors the class onto <body>
+    // so the existing body.dark selectors in styles.css keep working.
+    try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500;1,700&family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="preload" as="image" href="./assets/img/work/work-11b74571-1226.webp" imagesrcset="./assets/img/work/work-11b74571-800.webp 800w, ./assets/img/work/work-11b74571-1226.webp 1226w" imagesizes="(max-width: 768px) 100vw, 900px" fetchpriority="high" />
+
+  <style>
+    /* Critical CSS: prevent flash before the stylesheet loads. */
+    :root { color-scheme: light dark; }
+    html, body { background: #F0EDE6; color: #1a1a1a; font-family: 'DM Sans', system-ui, sans-serif; min-height: 100vh; margin: 0; }
+    :root.dark, body.dark { background: #1a1a1a; color: #e2ded7; }
+  </style>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <script>
+    // Mirror the pre-paint dark class from <html> onto <body> so existing
+    // body.dark CSS selectors (in styles.css) take effect immediately.
+    if (document.documentElement.classList.contains('dark')) document.body.classList.add('dark');
+  </script>
+  <div class="c-dot" id="cdot"></div>
+  <div class="c-ring" id="cring"></div>
+  <div id="nav"></div>
+  <div id="app"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="./bundle.js" defer></script>
+</body>
+</html>

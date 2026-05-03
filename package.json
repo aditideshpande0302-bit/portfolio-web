@@ -1,0 +1,20 @@
+{
+  "name": "portfolio-aditi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Aditi - Product Designer portfolio (zero-build static site).",
+  "scripts": {
+    "build": "npm run extract-images && npm run rewrite-html && npm run split-html && npm run split-pages && npm run bundle && npm run check",
+    "extract-images": "node scripts/extract-images.mjs",
+    "rewrite-html": "node scripts/rewrite-html.mjs",
+    "split-html": "node scripts/split-html.mjs",
+    "split-pages": "node scripts/split-pages.mjs",
+    "bundle": "node scripts/bundle.mjs",
+    "check": "node scripts/check-image-refs.mjs && node scripts/check-handlers.mjs && node scripts/smoke-pages.mjs && node --check bundle.js && node scripts/smoke-bundle.mjs",
+    "serve": "npx --yes serve -l 5180 ."
+  },
+  "devDependencies": {
+    "sharp": "^0.34.0"
+  }
+}
