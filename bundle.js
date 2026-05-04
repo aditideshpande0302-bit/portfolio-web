@@ -34,7 +34,7 @@ function navHTML(page) {
       </button>
       <div class="nav-right">
         ${isHome ? homeContact : innerLinks}
-        <button class="resume-btn" onclick="window.open('https://drive.google.com/file/d/1fPzEONrtjJCbjkJK1fO4UbxTC8Oh8dmU/view?usp=drive_link','_blank')">Resume</button>
+        <button class="resume-btn" onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')">Resume</button>
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
           <svg class="t-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="t-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -106,7 +106,7 @@ function footerHTML() {
           </div>
           <div class="footer-link-row">
             <span class="footer-link-label">Resume</span>
-            <button class="footer-link-value" onclick="window.open('https://drive.google.com/file/d/1fPzEONrtjJCbjkJK1fO4UbxTC8Oh8dmU/view?usp=drive_link','_blank')">Download <span class="f-arr">↓</span></button>
+            <button class="footer-link-value" onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')">Download <span class="f-arr">↓</span></button>
           </div>
         </div>
       </div>
@@ -412,7 +412,7 @@ function contactHTML() {
           <p class="contact-card-title">Connect on LinkedIn</p>
           <p class="contact-card-desc">Find me on LinkedIn to view my full professional profile and experience.</p>
         </a>
-        <button class="contact-card" onclick="window.open('https://drive.google.com/file/d/1fPzEONrtjJCbjkJK1fO4UbxTC8Oh8dmU/view?usp=drive_link','_blank')">
+        <button class="contact-card" onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')">
           <span class="contact-card-icon">Resume</span>
           <p class="contact-card-label">Resume</p>
           <p class="contact-card-title">Download Resume</p>
