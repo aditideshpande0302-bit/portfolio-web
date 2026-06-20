@@ -1,26 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackHTML, csGoToTopHTML } from '../shared.js';
 
 function purHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+    <div class="home-root">
+    <div class="cs-root cs-pur">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Ecommerce · Web · Responsive</p>
-        <h1 class="cs-title">PUR Water Purifier — Ecommerce Redesign</h1>
-        <p class="cs-subtitle">Redesigning the PUR desktop experience to enable direct purchasing, drive first-time conversions, and build retention through a filter reminder system.</p>
+      ${csBackHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Ecommerce · Web · Responsive</p>
+          <h1 class="cs-title">PUR Water Purifier — Ecommerce Redesign</h1>
+          <p class="cs-subtitle">Redesigning the PUR desktop experience to enable direct purchasing, drive first-time conversions, and build retention through a filter reminder system.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web, Responsive</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/water-purifier-mockup.png" alt="PUR Water Purifier — ecommerce redesign" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web, Responsive</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
-      </div>
-
-      <div class="cs-hero-img"><img src="/assets/img/work/work-071c820c-1226.webp" srcset="/assets/img/work/work-071c820c-800.webp 800w, /assets/img/work/work-071c820c-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR Water Purifier — ecommerce redesign" width="1226" height="648" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -35,7 +39,7 @@ function purHTML() {
           </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/pur/pur-d86c4e6a-1180.webp" srcset="/assets/img/case/pur/pur-d86c4e6a-800.webp 800w, /assets/img/case/pur/pur-d86c4e6a-1180.webp 1180w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR — broken purchase flow diagram" width="1180" height="379" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--sm" style="margin-bottom:32px;"><img src="/assets/img/case/pur/pur-d86c4e6a-1180.webp" srcset="/assets/img/case/pur/pur-d86c4e6a-800.webp 800w, /assets/img/case/pur/pur-d86c4e6a-1180.webp 1180w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR — broken purchase flow diagram" width="1180" height="379" loading="lazy" decoding="async" /></div>
 
         <div class="cs-stats">
           <div class="cs-stat">
@@ -151,9 +155,11 @@ function purHTML() {
         </div>
       </div>
 
-      ${csNextHTML('empowered','Empowered Vote — Civic Engagement Platform',['Civic Tech','UI/UX Design','Product Redesign'])}
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default purHTML;

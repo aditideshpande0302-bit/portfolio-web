@@ -73,7 +73,7 @@ const SYNC_RENDER_BLOCK = `
       calmnest:  'CalmNest - Case Study - Aditi Deshpande',
       hydration: 'Hydration - Case Study - Aditi Deshpande',
       genai:     'GenAI - Case Study - Aditi Deshpande',
-      empowered: 'Empowered Vote - Case Study - Aditi Deshpande',
+      empowered: 'Empowered Essentials - Case Study - Aditi Deshpande',
       barriers:  'Barriers - Case Study - Aditi Deshpande',
       aidesign:  'AI Design - Case Study - Aditi Deshpande',
     };
@@ -87,6 +87,19 @@ const SYNC_RENDER_BLOCK = `
       document.title = PAGE_TITLES[page] || PAGE_TITLES.home;
       window.scrollTo(0, 0);
       document.body.scrollTop = 0;
+      if (page === 'home') {
+        onHomeRendered();
+      } else if (page === 'work') {
+        onWorkRendered();
+      } else if (page === 'about') {
+        onAboutRendered();
+      } else if (CS_PAGES.includes(page)) {
+        teardownAboutScroll();
+        onCaseStudyRendered();
+      } else {
+        teardownAboutScroll();
+        setHomeNavHeight();
+      }
     }
 `;
 
@@ -130,9 +143,12 @@ async function main() {
   // the synchronous block. We anchor the end of the match on render's
   // last line so non-greedy matching can't bail out at an inner `};`.
   app = app.replace(
-    /\n\s*\/\/ ── Lazy route registry[\s\S]*?document\.body\.scrollTop = 0;\s*\n\s*\}\s*\n/,
+    /\n\s*\/\/ ── Lazy route registry[\s\S]*?\n\s*\}\s*\n(?=\s*\n\s*\/\/ ══════════════════════════════════════════\s*\n\s*\/\/\s*CURSOR)/,
     SYNC_RENDER_BLOCK + '\n'
   );
+  if (app.includes("import('./pages/")) {
+    throw new Error('bundle.mjs: failed to replace async render block — sync pages map still missing');
+  }
 
   parts.push('// ── app.js ──');
   parts.push(app.trim());

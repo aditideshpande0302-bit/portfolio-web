@@ -9,29 +9,36 @@
 
 const CS_PAGES = ['rightwall','pur','pathway','calmnest','hydration','genai','empowered','barriers','aidesign'];
 
+const WORK_CS_PAGES = ['pathway','calmnest','genai','barriers','aidesign'];
+
 const ALL_CATS = [
-  { cat:'featured', label:'Featured Work',     desc:'Selected case studies and highlighted projects', icon:'Featured' },
+  { cat:'accessibility', label:'Accessibility', desc:'Inclusive design and WCAG-informed work',     icon:'Accessibility' },
   { cat:'all',      label:'UI/UX Projects',    desc:'Product and interface design work',              icon:'UI/UX'    },
   { cat:'research', label:'Research Projects', desc:'User research, studies, and insights',           icon:'Research' },
   { cat:'ai',       label:'AI Projects',       desc:'AI experiments and design workflows',            icon:'AI'       },
 ];
 
 function navHTML(page) {
-  const isHome = page === 'home';
+  const useHomeNav = true;
   const isWork = page === 'work' || CS_PAGES.includes(page);
-  const innerLinks = isHome ? '' : `
+  const resumeOpen = `onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')"`;
+  const showHomeNav = page === 'work' || page === 'about' || WORK_CS_PAGES.includes(page);
+  const homeNavLink = showHomeNav
+    ? `<button class="nav-link" onclick="goTo('home')">Home</button>`
+    : '';
+  const homeLinks = `
+    ${homeNavLink}
+    <button class="nav-link ${page === 'work' || CS_PAGES.includes(page) ? 'active' : ''}" onclick="goTo('work')">Work</button>
+    <button class="nav-link ${page === 'about' ? 'active' : ''}" onclick="goTo('about')">About</button>
+    <button class="nav-link" ${resumeOpen}>Resume</button>`;
+  const innerLinks = `
     <button class="nav-link ${isWork?'active':''}" onclick="goTo('work')">Work</button>
     <button class="nav-link ${page==='about'?'active':''}" onclick="goTo('about')">About</button>
     <button class="nav-link" onclick="scrollToFooter()">Contact</button>`;
-  // Homepage: show Contact only (no Work/About)
-  const homeContact = '';
+  const logoMarkup = logoAdHTML();
   return `
     <div class="nav-inner">
-      <button class="logo" onclick="goTo('home')">
-        <span class="logo-a">a</span>
-        <div class="logo-gap"><div class="logo-dot"></div></div>
-        <span class="logo-d">d</span>
-      </button>
+      ${logoMarkup}
       <div class="nav-right">
         ${isHome ? homeContact : innerLinks}
         <button class="resume-btn" onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')">Resume</button>
@@ -61,7 +68,7 @@ function csNextHTML(nextPage, nextTitle, nextTags) {
   const tagHtml = nextTags.map(t=>`<span class="tag">${t}</span>`).join('');
 
   // Show all cats except the one the user came from
-  const sourceCat = window._lastWorkCat || 'featured';
+  const sourceCat = window._lastWorkCat || 'accessibility';
   const visibleCats = ALL_CATS.filter(k => k.cat !== sourceCat);
 
   const catHtml = visibleCats.map(k=>`
@@ -84,6 +91,37 @@ function csNextHTML(nextPage, nextTitle, nextTags) {
       <p class="cs-other-projects-label">Explore by Category</p>
       <div class="cs-other-grid">${catHtml}</div>
     </div>`;
+}
+
+function logoAdHTML() {
+  return `<button class="logo logo-ad" onclick="goTo('home')"><svg class="logo-ad-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-4.8 -24.24 149.44 151.68" aria-hidden="true" focusable="false"><g class="logo-ad-base" fill="none" stroke="#ccc"><path fill="none" d="M2.80 63.28C3.04 63.36 3.28 63.36 3.60 63.36C5.04 63.36 6.96 62.64 8.32 62.16C16.32 59.36 24.48 57.04 32.72 55.20C33.04 55.12 33.44 54.96 33.76 54.96C33.92 54.96 34.08 55.04 34.32 55.12C34.16 55.84 33.76 56.32 33.44 56.80C30.24 62.08 18.96 81.04 17.20 86C17.04 86.48 16.96 86.88 16.96 87.28C16.96 89.20 18.56 90.40 20.16 90.40C20.96 90.40 21.68 90.16 22.32 89.60C24.08 87.92 25.52 86 26.16 83.60C26.32 83.12 26.32 82.72 26.32 82.48C26.32 81.28 25.44 81.44 25.44 80.56C25.44 80.32 25.52 80 25.76 79.44C28.56 73.20 35.92 60.48 39.44 54.96C40.08 53.92 40.88 53.52 42 53.28C46.40 52.40 74.72 47.44 79.12 47.44L79.44 47.44L79.44 47.60C79.44 48 79.28 48.32 79.12 48.64C67.68 72.96 61.44 85.28 50.16 109.68L45.04 118.32C44.80 118.72 44.32 119.68 44.32 120.40C44.32 120.80 44.48 121.12 44.80 121.28C45.04 121.36 45.20 121.44 45.44 121.44C46.16 121.44 46.40 120.64 46.80 119.84C47.92 117.36 49.20 115.28 50.40 112.88C62.24 87.20 69.12 74.08 81.28 48.56C81.76 47.52 83.12 46.80 84.24 46.72C90.72 46.08 97.20 45.36 103.76 45.28C104 45.28 104.32 45.36 104.64 45.36C105.12 45.36 105.44 45.20 105.44 44.64C105.36 44.08 104.96 44 104.48 44L102.24 44C96.80 44 91.44 44.40 86.08 44.80C85.68 44.88 85.20 44.96 84.72 44.96C84.48 44.96 84.16 44.88 83.84 44.80C89.68 31.60 103.92 4.48 103.92-10L103.92-11.04C103.76-14.56 102.08-18.24 98.40-18.24C98-18.24 97.60-18.16 97.20-18.08C89.60-16.80 75.44-1.36 71.12 3.76C58.96 18.16 47.60 33.20 38 49.44C37.44 50.40 36.80 50.88 35.68 51.12C25.28 52.88 15.12 55.68 5.20 59.20C4.80 59.36 4.48 59.44 4.16 59.44C3.92 59.44 3.68 59.36 3.44 59.28C3.20 59.20 3.04 59.12 2.80 59.12C1.84 59.12 1.20 60.16 1.20 61.12C1.20 62 1.68 62.88 2.80 63.28Z"/><path fill="none" d="M97.04 69.12C101.68 66.40 107.12 58.24 111.04 53.76C111.36 54.08 111.52 54.32 111.52 54.56C111.52 54.96 111.28 55.20 111.12 55.52C107.12 64.56 102.96 73.60 100.56 83.20C100.08 85.12 99.92 86.56 99.92 87.60C99.92 89.60 100.56 90.32 101.12 90.32C101.44 90.32 101.76 90 101.76 89.60L101.76 89.36C101.60 88.88 101.60 88.32 101.60 87.84C101.60 86.80 101.84 85.84 102.08 84.80C102.72 82.72 103.28 80.56 104.08 78.56C112.24 57.60 122.64 37.92 136.48 20.16C137.20 19.28 137.76 18.32 138.40 17.36C138.56 17.04 138.64 16.72 138.64 16.48C138.64 15.76 138.08 15.36 137.20 15.36C136.88 15.36 136.64 15.36 136.32 15.44C135.84 15.60 135.44 16.08 135.12 16.40C128.56 23.76 124.56 30.64 119.52 39.04C117.36 42.48 114.80 45.68 112.32 49.12C110.72 47.60 109.28 46.88 107.84 46.88C106.80 46.88 105.60 47.36 104.32 48.16C99.36 51.20 94.96 57.84 92.80 63.20C92.32 64.40 92.08 65.52 92.08 66.40C92.08 68.56 93.28 69.76 94.88 69.76C95.60 69.76 96.32 69.52 97.04 69.12Z"/></g><g class="logo-ad-ink" fill="none" stroke="#1a1a1a" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path class="logo-ad-stroke-a logo-ad-stroke-a-1" fill="none" pathLength="1" d="M2.80 63.28C3.04 63.36 3.28 63.36 3.60 63.36C5.04 63.36 6.96 62.64 8.32 62.16C16.32 59.36 24.48 57.04 32.72 55.20C33.04 55.12 33.44 54.96 33.76 54.96C33.92 54.96 34.08 55.04 34.32 55.12C34.16 55.84 33.76 56.32 33.44 56.80C30.24 62.08 18.96 81.04 17.20 86C17.04 86.48 16.96 86.88 16.96 87.28C16.96 89.20 18.56 90.40 20.16 90.40C20.96 90.40 21.68 90.16 22.32 89.60C24.08 87.92 25.52 86 26.16 83.60C26.32 83.12 26.32 82.72 26.32 82.48C26.32 81.28 25.44 81.44 25.44 80.56C25.44 80.32 25.52 80 25.76 79.44C28.56 73.20 35.92 60.48 39.44 54.96C40.08 53.92 40.88 53.52 42 53.28C46.40 52.40 74.72 47.44 79.12 47.44L79.44 47.44L79.44 47.60C79.44 48 79.28 48.32 79.12 48.64C67.68 72.96 61.44 85.28 50.16 109.68L45.04 118.32C44.80 118.72 44.32 119.68 44.32 120.40C44.32 120.80 44.48 121.12 44.80 121.28C45.04 121.36 45.20 121.44 45.44 121.44C46.16 121.44 46.40 120.64 46.80 119.84C47.92 117.36 49.20 115.28 50.40 112.88C62.24 87.20 69.12 74.08 81.28 48.56C81.76 47.52 83.12 46.80 84.24 46.72C90.72 46.08 97.20 45.36 103.76 45.28C104 45.28 104.32 45.36 104.64 45.36C105.12 45.36 105.44 45.20 105.44 44.64C105.36 44.08 104.96 44 104.48 44L102.24 44C96.80 44 91.44 44.40 86.08 44.80C85.68 44.88 85.20 44.96 84.72 44.96C84.48 44.96 84.16 44.88 83.84 44.80C89.68 31.60 103.92 4.48 103.92-10L103.92-11.04C103.76-14.56 102.08-18.24 98.40-18.24C98-18.24 97.60-18.16 97.20-18.08C89.60-16.80 75.44-1.36 71.12 3.76C58.96 18.16 47.60 33.20 38 49.44C37.44 50.40 36.80 50.88 35.68 51.12C25.28 52.88 15.12 55.68 5.20 59.20C4.80 59.36 4.48 59.44 4.16 59.44C3.92 59.44 3.68 59.36 3.44 59.28C3.20 59.20 3.04 59.12 2.80 59.12C1.84 59.12 1.20 60.16 1.20 61.12C1.20 62 1.68 62.88 2.80 63.28Z"/><path class="logo-ad-stroke-d" fill="none" pathLength="1" d="M97.04 69.12C101.68 66.40 107.12 58.24 111.04 53.76C111.36 54.08 111.52 54.32 111.52 54.56C111.52 54.96 111.28 55.20 111.12 55.52C107.12 64.56 102.96 73.60 100.56 83.20C100.08 85.12 99.92 86.56 99.92 87.60C99.92 89.60 100.56 90.32 101.12 90.32C101.44 90.32 101.76 90 101.76 89.60L101.76 89.36C101.60 88.88 101.60 88.32 101.60 87.84C101.60 86.80 101.84 85.84 102.08 84.80C102.72 82.72 103.28 80.56 104.08 78.56C112.24 57.60 122.64 37.92 136.48 20.16C137.20 19.28 137.76 18.32 138.40 17.36C138.56 17.04 138.64 16.72 138.64 16.48C138.64 15.76 138.08 15.36 137.20 15.36C136.88 15.36 136.64 15.36 136.32 15.44C135.84 15.60 135.44 16.08 135.12 16.40C128.56 23.76 124.56 30.64 119.52 39.04C117.36 42.48 114.80 45.68 112.32 49.12C110.72 47.60 109.28 46.88 107.84 46.88C106.80 46.88 105.60 47.36 104.32 48.16C99.36 51.20 94.96 57.84 92.80 63.20C92.32 64.40 92.08 65.52 92.08 66.40C92.08 68.56 93.28 69.76 94.88 69.76C95.60 69.76 96.32 69.52 97.04 69.12Z"/></g></svg><span class="logo-ad-sr">Ad</span></button>`;
+}
+
+function homeFooterHTML() {
+  return `
+      <footer class="home-footer" id="home-footer">
+        <div class="home-footer__top">
+          ${logoAdHTML()}
+          <p class="home-footer__tagline">Designing with curiosity, shipping with clarity.</p>
+        </div>
+        <nav class="home-footer__nav" aria-label="Footer navigation">
+          <button class="home-footer__nav-link" onclick="goTo('home')">Home</button>
+          <button class="home-footer__nav-link" onclick="goTo('work')">Work</button>
+          <button class="home-footer__nav-link" onclick="goTo('about')">About</button>
+        </nav>
+        <div class="home-footer__divider" aria-hidden="true"></div>
+        <div class="home-footer__bottom">
+          <span class="home-footer__copy">© 2026 Aditi Deshpande</span>
+          <div class="home-footer__social">
+            <a class="home-footer__social-link" href="https://www.linkedin.com/in/aditi-deshpandepd/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <i class="ph ph-linkedin-logo"></i>
+            </a>
+            <a class="home-footer__social-link" href="mailto:aditideshpande0302@gmail.com" aria-label="Email">
+              <i class="ph ph-envelope"></i>
+            </a>
+          </div>
+        </div>
+      </footer>`;
 }
 
 function footerHTML() {
@@ -117,278 +155,491 @@ function footerHTML() {
     </footer>`;
 }
 
+function csBackHTML() {
+  return `<button class="cs-back" onclick="goTo('home')" aria-label="Back to home"><span class="cs-back-arrow">←</span> Back</button>`;
+}
+
+function csBackToWorkHTML() {
+  return `<button class="cs-back" onclick="goToWork('auto')" aria-label="Back to Selected Projects"><span class="cs-back-arrow">←</span> Back</button>`;
+}
+
+function csGoToTopHTML() {
+  return `<button class="cs-go-top" onclick="scrollToTop()" aria-label="Go to top">
+    <svg class="cs-go-top__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+    <span>Go to top</span>
+  </button>`;
+}
+
+function csZoomImgHTML(opts) {
+  const src = opts.src || '';
+  const srcset = opts.srcset || '';
+  const sizes = opts.sizes || '(max-width: 768px) 100vw, 900px';
+  const alt = opts.alt || '';
+  const width = opts.width || '';
+  const height = opts.height || '';
+  const fullSrc = opts.fullSrc || src;
+  const wrapClass = opts.wrapClass || '';
+  const margin = opts.margin != null ? opts.margin : 'margin-bottom:0;';
+  return `<button type="button" class="cs-img-wrap cs-img-zoom ${wrapClass}" style="${margin}" data-full="${fullSrc}" aria-label="View full image: ${alt}">
+    <img src="${src}" srcset="${srcset}" sizes="${sizes}" alt="${alt}" width="${width}" height="${height}" loading="lazy" decoding="async" />
+    <span class="cs-img-zoom__icon" aria-hidden="true"><i class="ph ph-magnifying-glass-plus"></i></span>
+  </button>`;
+}
+
+function csPhoneMockupHTML(opts) {
+  const videoSrc = opts.videoSrc || '';
+  const poster = opts.poster || '';
+  const src = opts.src || '';
+  const srcset = opts.srcset || '';
+  const alt = opts.alt || 'Prototype demo';
+
+  const media = videoSrc
+    ? `<video class="cs-phone-mockup__video" src="${videoSrc}"${poster ? ` poster="${poster}"` : ''} autoplay muted loop playsinline aria-label="${alt}"></video>`
+    : `<img src="${src}" srcset="${srcset}" sizes="(max-width: 768px) 220px, 240px" alt="${alt}" loading="lazy" decoding="async" />`;
+
+  return `<div class="cs-phone-mockup cs-phone-mockup--14-pro-max">
+    <div class="cs-phone-mockup__shell">
+      <span class="cs-phone-mockup__btn cs-phone-mockup__btn--silent" aria-hidden="true"></span>
+      <span class="cs-phone-mockup__btn cs-phone-mockup__btn--vol-up" aria-hidden="true"></span>
+      <span class="cs-phone-mockup__btn cs-phone-mockup__btn--vol-down" aria-hidden="true"></span>
+      <span class="cs-phone-mockup__btn cs-phone-mockup__btn--power" aria-hidden="true"></span>
+      <div class="cs-phone-mockup__bezel">
+        <div class="cs-phone-mockup__screen">
+          ${media}
+          <div class="cs-phone-mockup__island" aria-hidden="true">
+            <span class="cs-phone-mockup__camera"></span>
+          </div>
+          <span class="cs-phone-mockup__glare" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function csMacbookMockupHTML(opts) {
+  const videoSrc = opts.videoSrc || '';
+  const poster = opts.poster || '';
+  const src = opts.src || '';
+  const srcset = opts.srcset || '';
+  const alt = opts.alt || 'Prototype demo';
+
+  const media = videoSrc
+    ? `<video class="cs-macbook-mockup__video" src="${videoSrc}"${poster ? ` poster="${poster}"` : ''} autoplay muted loop playsinline aria-label="${alt}"></video>`
+    : `<img src="${src}" srcset="${srcset}" sizes="(max-width: 768px) 100vw, 720px" alt="${alt}" loading="lazy" decoding="async" />`;
+
+  return `<div class="cs-macbook-mockup">
+    <div class="cs-macbook-mockup__lid">
+      <div class="cs-macbook-mockup__bezel">
+        <div class="cs-macbook-mockup__screen">
+          ${media}
+          <span class="cs-macbook-mockup__glare" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <div class="cs-macbook-mockup__base" aria-hidden="true">
+      <span class="cs-macbook-mockup__notch"></span>
+    </div>
+  </div>`;
+}
+
 // ── pages/home.js ──
 function homeHTML() {
   return `
     <div class="home-root">
-      <div class="hero">
-        <p class="greeting">Hi, I'm Aditi</p>
-        <h1 class="headline">
-          <span class="headline-line"><span class="accent">Product Designer</span> specializing in</span>
-          <span class="headline-line">interaction design and the user</span>
-          <span class="headline-line">behaviors that make an</span>
-          <span class="headline-line">experience.</span>
-        </h1>
-        <p class="subtext">I work end to end from framing the problem to shaping flows, refining interactions, and validating decisions through prototypes. Grounded in user psychology, accessibility, and an evolving AI-integrated workflow.</p>
+      <div class="home-hero-block">
+        <div class="hero-grid-overlay" aria-hidden="true"></div>
+        <div class="hero">
+          <div class="hero-opportunities-badge">
+            <span class="hero-opportunities-badge__dot" aria-hidden="true"></span>
+            <span class="hero-opportunities-badge__text">Open to opportunities</span>
+          </div>
+          <h1 class="headline"><strong class="accent">Product Designer</strong> turning complex systems into experiences shaped by how users actually behave.</h1>
+          <p class="subtext" style="font-weight: 300; font-style: normal;">Driven by curiosity about user behavior, I design the flows, edge cases, and details that turn complexity into clarity.</p>
+          <div class="hero-cta">
+            <button class="hero-btn hero-btn-primary" onclick="goTo('work')">View my work</button>
+            <button class="hero-btn hero-btn-ghost" onclick="goTo('about')">About me</button>
+          </div>
+          <div class="hero-scroll-indicator" aria-hidden="true">
+            <div class="hero-scroll-indicator__mouse">
+              <span class="hero-scroll-indicator__wheel"></span>
+            </div>
+            <span class="hero-scroll-indicator__label">Scroll to explore</span>
+          </div>
+        </div>
       </div>
-      <div class="cards">
-        <button class="card" onclick="goTo('work')">
-          <span class="card-title">Selected Work</span>
-          <span class="card-desc">5+ case studies across ecommerce, AI, civic tech, accessibility, and mobile.</span>
-          <span class="card-arrow">→</span>
-        </button>
-        <button class="card" onclick="goTo('about')">
-          <span class="card-title">About Me</span>
-          <span class="card-desc">2+ years of experience in designing end-to-end digital products.</span>
-          <span class="card-arrow">→</span>
-        </button>
-      </div>
-      <div class="availability">
-        <div class="avail-dot"></div>
-        <span class="avail-text">Available for new opportunities</span>
-      </div>
+
+      <section class="featured-work" aria-labelledby="featured-work-heading">
+        <h2 id="featured-work-heading" class="featured-work__heading">Featured Work</h2>
+        <div class="featured-work__stack">
+          <figure class="featured-work__figure">
+            <article class="featured-work__card" onclick="goTo('rightwall')">
+              <div class="featured-work__visual featured-work__visual--rightwall">
+                <img src="./assets/img/featured/rightwall-mockup.png" alt="" class="featured-work__media" />
+              </div>
+              <div class="featured-work__body">
+                <span class="featured-work__number">01</span>
+                <h3 class="featured-work__title">Rightwall</h3>
+                <p class="featured-work__desc">Designed an app for emerging visual artists to discover exhibitions that fit their artistic style, enabling them to quickly evaluate fit and achieve 80% task success.</p>
+                <div class="featured-work__tags">
+                  <span class="featured-work__tag">Mobile app</span>
+                  <span class="featured-work__tag">Discovery</span>
+                  <span class="featured-work__tag">End-to-End Ux</span>
+                </div>
+                <button class="featured-work__link" onclick="goTo('rightwall')">View case study</button>
+              </div>
+            </article>
+          </figure>
+          <figure class="featured-work__figure">
+            <article class="featured-work__card">
+              <div class="featured-work__visual featured-work__visual--pathway">
+                <img src="./assets/img/featured/empoweredvault-mockup.png" alt="" class="featured-work__media" />
+              </div>
+              <div class="featured-work__body">
+                <span class="featured-work__number">02</span>
+                <h3 class="featured-work__title">Empowered Essentials</h3>
+                <p class="featured-work__desc">Non-partisan tools to see who represents you from city council to federal level — enter a ZIP code for voting records, funding, and policy positions. No login required.</p>
+                <div class="featured-work__tags">
+                  <span class="featured-work__tag">Civic Tech</span>
+                  <span class="featured-work__tag">Web</span>
+                  <span class="featured-work__tag">Product Design</span>
+                </div>
+                <button class="featured-work__link" onclick="goTo('empowered')">View case study</button>
+              </div>
+            </article>
+          </figure>
+          <figure class="featured-work__figure">
+            <article class="featured-work__card">
+              <div class="featured-work__visual featured-work__visual--pur">
+                <img src="./assets/img/featured/water-purifier-mockup.png" alt="" class="featured-work__media" />
+              </div>
+              <div class="featured-work__body">
+                <span class="featured-work__number">03</span>
+                <h3 class="featured-work__title">PUR Water purifier</h3>
+                <p class="featured-work__desc">Redesigned the PUR desktop experience by streamlining navigation and key purchase flows, improving overall performance from 9% to 56%.</p>
+                <div class="featured-work__tags">
+                  <span class="featured-work__tag">Ecommerce</span>
+                  <span class="featured-work__tag">web</span>
+                  <span class="featured-work__tag">responsive</span>
+                </div>
+                <button class="featured-work__link" onclick="goTo('pur')">View case study</button>
+              </div>
+            </article>
+          </figure>
+        </div>
+        <div class="featured-work__cta">
+          <button class="featured-work__cta-btn" onclick="goTo('work')">View all projects</button>
+        </div>
+      </section>
+
+      ${homeFooterHTML()}
     </div>`;
 }
 
 // ── pages/work.js ──
 function workHTML() {
   return `
+    <div class="home-root">
     <div class="work-root">
-      <h2 class="page-heading">Selected Projects</h2>
-      <div class="cat-tabs">
-        <button class="cat-tab active" onclick="switchCat('featured',this)">Featured Work</button>
-        <button class="cat-tab" onclick="switchCat('all',this)">UI/UX Projects</button>
-        <button class="cat-tab" onclick="switchCat('research',this)">Research Projects</button>
-        <button class="cat-tab" onclick="switchCat('ai',this)">AI Projects</button>
-      </div>
+      <div class="work-layout">
+        <aside class="work-sidebar">
+          <h2 class="work-page__heading">More Projects</h2>
+          <p class="work-page__subtext">A collection of projects across accessibility, UI/UX design, research, and AI, showcasing different challenges, ideas, and design solutions.</p>
+          <nav class="work-cat-nav" aria-label="Project categories">
+            <button type="button" class="work-cat-nav__item is-active" data-cat="ai" onclick="switchWorkCat('ai')">AI</button>
+            <button type="button" class="work-cat-nav__item" data-cat="all" onclick="switchWorkCat('all')">UI UX Design</button>
+            <button type="button" class="work-cat-nav__item" data-cat="research" onclick="switchWorkCat('research')">Research</button>
+            <button type="button" class="work-cat-nav__item" data-cat="accessibility" onclick="switchWorkCat('accessibility')">Accessibility</button>
+          </nav>
+        </aside>
 
-      <!-- ── Featured Work ── -->
-      <div class="cat-panel active" id="cat-featured">
-        <div class="work-grid">
-          <div class="project-card" onclick="openProject('rightwall','featured')">
-            <div class="project-thumb t1"><img src="./assets/img/work/work-11b74571-1226.webp" srcset="./assets/img/work/work-11b74571-800.webp 800w, ./assets/img/work/work-11b74571-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall" width="1226" height="652" fetchpriority="high" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Mobile App</span><span class="tag">Discovery</span><span class="tag">End-to-End UX</span></div>
-              <p class="project-name">RightWall</p>
-              <p class="project-desc">Designed an app for emerging visual artists to discover exhibitions that fit their artistic style, enabling them to quickly evaluate fit and achieve 80% task success.</p>
+        <div class="work-stack" data-card-count="8">
+          <!-- AI -->
+          <figure class="work-card-figure" data-cat="ai">
+            <div class="project-card" onclick="openProject('aidesign','ai')">
+              <div class="project-thumb t2"><img src="./assets/img/work/work-5c6230c9-1500.webp" srcset="./assets/img/work/work-5c6230c9-800.webp 800w, ./assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison" width="1500" height="1000" loading="lazy" decoding="async" /></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">AI</span><span class="tag">Comparison</span><span class="tag">Tools</span></div>
+                <p class="project-name">AI Design Tool Comparison</p>
+                <p class="project-desc">Evaluated AI-powered design tools across output quality, workflow fit, and designer control — to inform smarter adoption decisions.</p>
+                <button class="project-card__link" onclick="event.stopPropagation(); openProject('aidesign','ai')">View case study</button>
+              </div>
             </div>
-          </div>
-          <div class="project-card" onclick="openProject('pathway','featured')">
-            <div class="project-thumb t2"><img src="./assets/img/work/work-aecbbef3-1224.webp" srcset="./assets/img/work/work-aecbbef3-800.webp 800w, ./assets/img/work/work-aecbbef3-1224.webp 1224w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway" width="1224" height="650" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Research</span><span class="tag">Accessibility Design</span><span class="tag">WCAG Informed</span></div>
-              <p class="project-name">Pathway</p>
-              <p class="project-desc">Accessibility-first transit companion for red-green color-blind commuters, achieving 7.24:1 contrast compliance through WCAG-guided color validation.</p>
+          </figure>
+          <figure class="work-card-figure" data-cat="ai">
+            <div class="project-card project-card--soon">
+              <div class="project-thumb t1"><img src="./assets/img/work/ai-rightwall-mockup-1600.webp" srcset="./assets/img/work/ai-rightwall-mockup-800.webp 800w, ./assets/img/work/ai-rightwall-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="AI-Integrated RightWall — AI call generator mockup" width="1024" height="768" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">AI</span><span class="tag">RightWall</span><span class="tag">Experiment</span></div>
+                <p class="project-name">AI-Integrated RightWall</p>
+                <p class="project-desc">Explored AI-powered curation to enhance exhibition discovery within RightWall — balancing algorithmic suggestions with artist intent and control.</p>
+              </div>
             </div>
-          </div>
-          <div class="project-card" onclick="openProject('pur','featured')">
-            <div class="project-thumb t3"><img src="./assets/img/work/work-071c820c-1226.webp" srcset="./assets/img/work/work-071c820c-800.webp 800w, ./assets/img/work/work-071c820c-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR Water Purifier" width="1226" height="648" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Ecommerce</span><span class="tag">Web</span><span class="tag">Responsive</span></div>
-              <p class="project-name">PUR Water Purifier</p>
-              <p class="project-desc">Redesigned the PUR desktop experience by streamlining navigation and key purchase flows, improving overall performance from 9% to 56%.</p>
+          </figure>
+          <figure class="work-card-figure" data-cat="ai">
+            <div class="project-card project-card--soon">
+              <div class="project-thumb t3"><img src="./assets/img/work/work-02eb2a6f-1500.webp" srcset="./assets/img/work/work-02eb2a6f-800.webp 800w, ./assets/img/work/work-02eb2a6f-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Workflow Exploration" width="1500" height="870" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">AI</span><span class="tag">Workflow</span><span class="tag">Process</span></div>
+                <p class="project-name">AI Workflow Exploration</p>
+                <p class="project-desc">Documented and refined an AI-integrated UX design workflow — testing where AI accelerates without replacing design judgment.</p>
+              </div>
             </div>
-          </div>
-          <div class="project-card" onclick="openProject('empowered','featured')" style="cursor:pointer;">
-            <div class="project-thumb t4"><img src="./assets/img/work/work-972f2aa7-1226.webp" srcset="./assets/img/work/work-972f2aa7-800.webp 800w, ./assets/img/work/work-972f2aa7-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote" width="1226" height="648" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Civic Tech</span><span class="tag">UI/UX Design</span><span class="tag">Product Redesign</span></div>
-              <p class="project-name">Empowered Vote</p>
-              <p class="project-desc">Redesigned civic engagement experiences — representative discovery, feature introduction, and issue-based decision flows — making political information easier to understand and act on.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+          </figure>
 
-      <!-- ── UI/UX Projects ── -->
-      <div class="cat-panel" id="cat-all">
-        <div class="work-grid">
-          <div class="project-card" onclick="openProject('calmnest','all')">
-            <div class="project-thumb t5"><img src="./assets/img/work/work-ed343775-1419.webp" srcset="./assets/img/work/work-ed343775-800.webp 800w, ./assets/img/work/work-ed343775-1419.webp 1419w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest Meditation App" width="1419" height="896" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Wellness</span><span class="tag">Mobile</span><span class="tag">Habit Design</span></div>
-              <p class="project-name">CalmNest Meditation App</p>
-              <p class="project-desc">Mindfulness app built on habit-forming principles — streak rewards, daily recommendations, and progress tracking to build a consistent practice.</p>
+          <!-- UI/UX -->
+          <figure class="work-card-figure" data-cat="all">
+            <div class="project-card" onclick="openProject('calmnest','all')">
+              <div class="project-thumb t5"><img src="./assets/img/work/calmnest-mockup-1600.webp" srcset="./assets/img/work/calmnest-mockup-800.webp 800w, ./assets/img/work/calmnest-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest Meditation App" width="1024" height="768" loading="lazy" decoding="async" /></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">Wellness</span><span class="tag">Mobile</span><span class="tag">Habit Design</span></div>
+                <p class="project-name">CalmNest Meditation App</p>
+                <p class="project-desc">Mindfulness app built on habit-forming principles — streak rewards, daily recommendations, and progress tracking to build a consistent practice.</p>
+                <button class="project-card__link" onclick="event.stopPropagation(); openProject('calmnest','all')">View case study</button>
+              </div>
             </div>
-          </div>
-          <div class="project-card" onclick="openProject('hydration','all')">
-            <div class="project-thumb t6"><img src="./assets/img/work/work-1f1d13a6-1419.webp" srcset="./assets/img/work/work-1f1d13a6-800.webp 800w, ./assets/img/work/work-1f1d13a6-1419.webp 1419w" sizes="(max-width: 768px) 100vw, 900px" alt="Hydration App" width="1419" height="896" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Health</span><span class="tag">Mobile</span><span class="tag">Habit Design</span></div>
-              <p class="project-name">Hydration App</p>
-              <p class="project-desc">Daily water intake tracker validated through pretotyping — risky assumption testing, Fake Door experiments, and an MVP rerun to confirm user engagement.</p>
+          </figure>
+          <figure class="work-card-figure" data-cat="all">
+            <div class="project-card project-card--soon">
+              <div class="project-thumb t2"><img src="./assets/img/work/work-2eea364d-1600.webp" srcset="./assets/img/work/work-2eea364d-800.webp 800w, ./assets/img/work/work-2eea364d-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gamification App" width="1600" height="971" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">Engagement</span><span class="tag">Mobile</span><span class="tag">Gamification</span></div>
+                <p class="project-name">Gamification App</p>
+                <p class="project-desc">Explored gamification mechanics to drive habit engagement and sustained user motivation.</p>
+              </div>
             </div>
-          </div>
-          <div class="project-card" style="cursor:default;">
-            
-            <div class="project-thumb t2"><img src="./assets/img/work/work-2eea364d-1600.webp" srcset="./assets/img/work/work-2eea364d-800.webp 800w, ./assets/img/work/work-2eea364d-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gamification App" width="1600" height="971" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Engagement</span><span class="tag">Mobile</span><span class="tag">Gamification</span></div>
-              <p class="project-name">Gamification App</p>
-              <p class="project-desc">Explored gamification mechanics to drive habit engagement and sustained user motivation.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+          </figure>
 
-      <!-- ── Research Projects ── -->
-      <div class="cat-panel" id="cat-research">
-        <div class="work-grid">
-          <div class="project-card" onclick="openProject('genai','research')">
-            <div class="project-thumb t6"><img src="./assets/img/work/work-5058dc6c-1600.webp" srcset="./assets/img/work/work-5058dc6c-800.webp 800w, ./assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy" width="1600" height="1200" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Generative AI</span><span class="tag">User Research</span><span class="tag">Education</span></div>
-              <p class="project-name">Gen AI Study Buddy</p>
-              <p class="project-desc">12 in-depth interviews exploring how students use, trust, and struggle with GenAI tools for academic learning — with recommendations for ethical integration.</p>
+          <!-- Research -->
+          <figure class="work-card-figure" data-cat="research">
+            <div class="project-card" onclick="openProject('genai','research')">
+              <div class="project-thumb t6"><img src="./assets/img/work/work-5058dc6c-1600.webp" srcset="./assets/img/work/work-5058dc6c-800.webp 800w, ./assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy" width="1600" height="1200" loading="lazy" decoding="async" /></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">Generative AI</span><span class="tag">User Research</span><span class="tag">Education</span></div>
+                <p class="project-name">Gen AI Study Buddy</p>
+                <p class="project-desc">12 in-depth interviews exploring how students use, trust, and struggle with GenAI tools for academic learning — with recommendations for ethical integration.</p>
+                <button class="project-card__link" onclick="event.stopPropagation(); openProject('genai','research')">View case study</button>
+              </div>
             </div>
-          </div>
-          <div class="project-card" onclick="openProject('barriers','research')" style="cursor:pointer;">
-            <div class="project-thumb t4"><img src="./assets/img/work/work-270c3aa2-1500.webp" srcset="./assets/img/work/work-270c3aa2-800.webp 800w, ./assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities" width="1500" height="1000" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">Qualitative Research</span><span class="tag">Arts</span><span class="tag">Discovery</span></div>
-              <p class="project-name">Barriers in Exhibition Opportunities</p>
-              <p class="project-desc">Investigated systemic and informational barriers preventing emerging visual artists from accessing exhibition opportunities — the foundational research behind RightWall.</p>
+          </figure>
+          <figure class="work-card-figure" data-cat="research">
+            <div class="project-card" onclick="openProject('barriers','research')">
+              <div class="project-thumb t4"><img src="./assets/img/work/work-270c3aa2-1500.webp" srcset="./assets/img/work/work-270c3aa2-800.webp 800w, ./assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities" width="1500" height="1000" loading="lazy" decoding="async" /></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">Qualitative Research</span><span class="tag">Arts</span><span class="tag">Discovery</span></div>
+                <p class="project-name">Barriers in Exhibition Opportunities</p>
+                <p class="project-desc">Investigated systemic and informational barriers preventing emerging visual artists from accessing exhibition opportunities — the foundational research behind RightWall.</p>
+                <button class="project-card__link" onclick="event.stopPropagation(); openProject('barriers','research')">View case study</button>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </figure>
 
-      <!-- ── AI Projects ── -->
-      <div class="cat-panel" id="cat-ai">
-        <div class="work-grid">
-          <div class="project-card" onclick="openProject('aidesign','ai')" style="cursor:pointer;">
-            <div class="project-thumb t2"><img src="./assets/img/work/work-5c6230c9-1500.webp" srcset="./assets/img/work/work-5c6230c9-800.webp 800w, ./assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison" width="1500" height="1000" loading="lazy" decoding="async" /></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">AI</span><span class="tag">Comparison</span><span class="tag">Tools</span></div>
-              <p class="project-name">AI Design Tool Comparison</p>
-              <p class="project-desc">Evaluated AI-powered design tools across output quality, workflow fit, and designer control — to inform smarter adoption decisions.</p>
+          <!-- Accessibility -->
+          <figure class="work-card-figure" data-cat="accessibility">
+            <div class="project-card" onclick="openProject('pathway','accessibility')">
+              <div class="project-thumb t2"><img src="./assets/img/work/pathway-mockup-1600.webp" srcset="./assets/img/work/pathway-mockup-800.webp 800w, ./assets/img/work/pathway-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway" width="1024" height="682" loading="lazy" decoding="async" /></div>
+              <div class="project-info">
+                <div class="project-tags"><span class="tag">Research</span><span class="tag">Accessibility Design</span><span class="tag">WCAG Informed</span></div>
+                <p class="project-name">Pathway</p>
+                <p class="project-desc">Accessibility-first transit companion for red-green color-blind commuters, achieving 7.24:1 contrast compliance through WCAG-guided color validation.</p>
+                <button class="project-card__link" onclick="event.stopPropagation(); openProject('pathway','accessibility')">View case study</button>
+              </div>
             </div>
-          </div>
-          <div class="project-card">
-            
-            <div class="project-thumb t1"><img src="./assets/img/work/work-d754ab5b-1600.webp" srcset="./assets/img/work/work-d754ab5b-800.webp 800w, ./assets/img/work/work-d754ab5b-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="AI-Integrated RightWall" width="1600" height="971" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">AI</span><span class="tag">RightWall</span><span class="tag">Experiment</span></div>
-              <p class="project-name">AI-Integrated RightWall</p>
-              <p class="project-desc">Explored AI-powered curation to enhance exhibition discovery within RightWall — balancing algorithmic suggestions with artist intent and control.</p>
-            </div>
-          </div>
-          <div class="project-card">
-            
-            <div class="project-thumb t3"><img src="./assets/img/work/work-02eb2a6f-1500.webp" srcset="./assets/img/work/work-02eb2a6f-800.webp 800w, ./assets/img/work/work-02eb2a6f-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Workflow Exploration" width="1500" height="870" loading="lazy" decoding="async" /><span class="coming-soon-chip">Coming soon</span></div>
-            <div class="project-info">
-              <div class="project-tags"><span class="tag">AI</span><span class="tag">Workflow</span><span class="tag">Process</span></div>
-              <p class="project-name">AI Workflow Exploration</p>
-              <p class="project-desc">Documented and refined an AI-integrated UX design workflow — testing where AI accelerates without replacing design judgment.</p>
-            </div>
-          </div>
+          </figure>
         </div>
       </div>
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/about.js ──
+const aboutPhotos = [
+  {
+    src: './assets/img/about/about-fa7bd9c9-1536.webp',
+    srcset: './assets/img/about/about-fa7bd9c9-800.webp 800w, ./assets/img/about/about-fa7bd9c9-1536.webp 1536w',
+    alt: 'Aditi Deshpande in a park with cherry blossoms',
+    width: 1536,
+    height: 2048,
+    eager: true,
+  },
+  {
+    src: './assets/img/about/about-81aed2cd-1536.webp',
+    srcset: './assets/img/about/about-81aed2cd-800.webp 800w, ./assets/img/about/about-81aed2cd-1536.webp 1536w',
+    alt: 'Aditi Deshpande at graduation',
+    width: 1536,
+    height: 2048,
+    eager: false,
+  },
+  {
+    src: './assets/img/about/about-ed4fb3f9-1536.webp',
+    srcset: './assets/img/about/about-ed4fb3f9-800.webp 800w, ./assets/img/about/about-ed4fb3f9-1536.webp 1536w',
+    alt: 'Aditi Deshpande in graduation regalia',
+    width: 1536,
+    height: 2048,
+    eager: false,
+  },
+];
+
+function photoImg(photo, index) {
+  const active = index === 0 ? ' is-active' : '';
+  const loading = photo.eager ? 'eager' : 'lazy';
+  return `<img class="about-layout__photo-img${active}" src="${photo.src}" srcset="${photo.srcset}" sizes="(max-width: 768px) 100vw, 480px" alt="${photo.alt}" width="${photo.width}" height="${photo.height}" loading="${loading}" decoding="async" />`;
+}
+
 function aboutHTML() {
+  const photoStack = aboutPhotos.map(photoImg).join('');
+
   return `
-    <div class="about-root">
-      <h2 class="page-heading">My journey into design</h2>
+    <div class="home-root home-root--about">
+    <div class="about-root" id="about-root">
+      <div class="about-layout" id="about-layout">
+        <aside class="about-layout__photo">
+          <div class="about-layout__sticky">
+            <div class="about-layout__frame">${photoStack}</div>
+          </div>
+        </aside>
+        <div class="about-layout__content">
+          <section class="about-block about-reveal" data-about-photo="0">
+            <h2 class="about-block__title">About Me</h2>
+            <div class="about-text">
+              <p>I'm Aditi, a product designer with a foundation in Fine Arts. Before moving into digital products, I spent years studying composition, color, and visual storytelling.</p>
+              <p>That background continues to shape how I design today. I focus on understanding problems clearly and turning them into structured, usable experiences.</p>
+              <p>I work end-to-end, from exploring ambiguous problems and conducting user research to designing, testing, and refining solutions. My work spans <strong>e-commerce, accessibility, civic tech, and AI-driven products.</strong></p>
+            </div>
+          </section>
 
-      <!-- About Me -->
-      <div class="about-section">
-        <p class="section-cat-label">About Me</p>
-        <div class="about-intro-grid">
-          <div class="photo-block">
-            <div class="photo-frame" style="padding:0;overflow:hidden;"><img src="./assets/img/about/about-fa7bd9c9-1536.webp" srcset="./assets/img/about/about-fa7bd9c9-800.webp 800w, ./assets/img/about/about-fa7bd9c9-1536.webp 1536w" sizes="(max-width: 768px) 100vw, 900px" alt="Aditi Deshpande" width="1536" height="2048" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" /></div>
-          </div>
-          <div class="about-text">
-            <p>I'm Aditi, a product designer with a foundation in Fine Arts. Before moving into digital products, I spent years studying composition, color, and visual storytelling.</p>
-            <p>That background continues to shape how I design today. I focus on understanding problems clearly and turning them into structured, usable experiences.</p>
-            <p>I work end-to-end, from exploring ambiguous problems and conducting user research to designing, testing, and refining solutions. My work spans <strong>e-commerce, accessibility, civic tech, and AI-driven products.</strong></p>
-          </div>
+          <section class="about-block about-reveal" data-about-photo="1">
+            <h2 class="about-block__title">My Journey</h2>
+            <div class="timeline">
+              <div class="tl-item">
+                <p class="tl-year">Bachelor's</p>
+                <div>
+                  <p class="tl-title">Bachelor's in Fine Arts</p>
+                  <p class="tl-desc">Completed my Bachelor's in Fine Arts, building a strong foundation in visual thinking and storytelling. During this time, I also worked on a campaign for a spice brand, applying design in a real-world context.</p>
+                  <a class="campaign-cta" href="#" onclick="toast('Campaign coming soon'); return false;">View campaign design →</a>
+                </div>
+              </div>
+              <div class="tl-item">
+                <p class="tl-year">Master's</p>
+                <div>
+                  <p class="tl-title">Thomas Jefferson University</p>
+                  <p class="tl-desc">Completed my Master's in User Experience and Interaction Design, where I transitioned from visual design to solving product problems. I learned to apply research, usability, and structured thinking to design decisions.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="about-block about-reveal" data-about-photo="2">
+            <h2 class="about-block__title">My Experience</h2>
+            <div class="exp-list">
+              <div class="exp-item">
+                <div>
+                  <p class="exp-role">UI/UX Designer</p>
+                  <p class="exp-company">Empowered Vote</p>
+                  <p class="exp-desc">Designing end-to-end product experiences that help users access and understand civic information. Working closely with the team to structure features, improve user flows, and refine interactions based on feedback and usability insights.</p>
+                </div>
+                <p class="exp-date">Current</p>
+              </div>
+              <div class="exp-item">
+                <div>
+                  <p class="exp-role">UX Researcher</p>
+                  <p class="exp-company">Generative AI Study</p>
+                  <p class="exp-desc">Led exploratory research to understand how users adopt and interact with generative AI tools. Conducted 12 in-depth semi-structured interviews and analyzed qualitative data using thematic analysis to identify patterns in user behavior, mental models, and pain points across multi-step workflows. Synthesized findings into actionable insights and collaborated with stakeholders to translate them into product requirements.</p>
+                </div>
+                <p class="exp-date">Jan – May 2024</p>
+              </div>
+              <div class="exp-item">
+                <div>
+                  <p class="exp-role">Graphic Designer</p>
+                  <p class="exp-company">Zica Institute of Creative Arts</p>
+                  <p class="exp-desc">Freelance graphic designer responsible for creating branding assets, exhibition templates, and brochures for Zica Institute of Creative Arts. Designed cohesive visual materials to support their creative showcases and presentations.</p>
+                </div>
+                <p class="exp-date">July 2021</p>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
 
-      <!-- My Journey -->
-      <div class="about-section">
-        <p class="section-cat-label">My Journey</p>
-        <div class="timeline">
-          <div class="tl-item">
-            <p class="tl-year">Bachelor's</p>
-            <div>
-              <p class="tl-title">Bachelor's in Fine Arts</p>
-              <p class="tl-desc">Completed my Bachelor's in Fine Arts, building a strong foundation in visual thinking and storytelling. During this time, I also worked on a campaign for a spice brand, applying design in a real-world context.</p>
-              <a class="campaign-cta" href="#" onclick="toast('Campaign coming soon'); return false;">View campaign design →</a>
-            </div>
+      <section class="about-certs about-reveal">
+        <div class="about-certs__layout">
+          <div class="about-certs__intro">
+            <h2 class="about-block__title">Certifications</h2>
+            <p class="about-certs__desc">Continuous learning in UX design, AI, and emerging technologies through industry-recognized programs.</p>
           </div>
-          <div class="tl-item">
-            <p class="tl-year">Master's</p>
-            <div>
-              <p class="tl-title">Thomas Jefferson University</p>
-              <p class="tl-desc">Completed my Master's in User Experience and Interaction Design, where I transitioned from visual design to solving product problems. I learned to apply research, usability, and structured thinking to design decisions.</p>
+          <div class="about-certs__list">
+            <div class="cert-row">
+              <a class="cert-row__link" href="https://coursera.org/verify/QIVZ7D8X7AVU" target="_blank" rel="noopener noreferrer">
+                <div class="cert-row__text">
+                  <p class="cert-issuer">SkillUp · Coursera</p>
+                  <p class="cert-name">Generative AI: The Future of UX UI Design</p>
+                </div>
+              </a>
+              <button type="button" class="cert-row__thumb" data-cert-full="./assets/img/about/about-2bd59827-1600.webp" aria-label="View full certificate: Generative AI: The Future of UX UI Design">
+                <img src="./assets/img/about/about-2bd59827-800.webp" alt="Generative AI: The Future of UX UI Design certificate" width="800" height="618" loading="lazy" decoding="async" />
+              </button>
             </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Experience -->
-      <div class="about-section">
-        <p class="section-cat-label">Experience</p>
-        <div class="exp-list">
-          <div class="exp-item">
-            <div>
-              <p class="exp-role">UI/UX Designer</p>
-              <p class="exp-company">Empowered Vote</p>
-              <p class="exp-desc">Designing end-to-end product experiences that help users access and understand civic information. Working closely with the team to structure features, improve user flows, and refine interactions based on feedback and usability insights.</p>
-            </div>
-            <p class="exp-date">Current</p>
-          </div>
-          <div class="exp-item">
-            <div>
-              <p class="exp-role">UX Researcher</p>
-              <p class="exp-company">Generative AI Study</p>
-              <p class="exp-desc">Led exploratory research to understand how users adopt and interact with generative AI tools. Conducted 12 in-depth semi-structured interviews and analyzed qualitative data using thematic analysis to identify patterns in user behavior, mental models, and pain points across multi-step workflows. Synthesized findings into actionable insights and collaborated with stakeholders to translate them into product requirements.</p>
-            </div>
-            <p class="exp-date">Jan – May 2024</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Certifications -->
-      <div class="about-section">
-        <p class="section-cat-label">Certifications</p>
-        <div class="cert-grid">
-          <div class="cert-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.open('https://coursera.org/verify/QIVZ7D8X7AVU','_blank')">
-            <img src="./assets/img/about/about-2bd59827-1600.webp" srcset="./assets/img/about/about-2bd59827-800.webp 800w, ./assets/img/about/about-2bd59827-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Certificate: Generative AI: The Future of UX UI Design — SkillUp / Coursera" width="1600" height="1236" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;" />
-            <div class="cert-card-body">
-              <p class="cert-issuer">SkillUp · Coursera</p>
-              <p class="cert-name">Generative AI: The Future of UX UI Design</p>
-            </div>
-          </div>
-          <div class="cert-card" style="padding:0;overflow:hidden;cursor:pointer;" onclick="window.open('https://coursera.org/verify/MZJXJA475R5R','_blank')">
-            <img src="./assets/img/about/about-0a66a753-1600.webp" srcset="./assets/img/about/about-0a66a753-800.webp 800w, ./assets/img/about/about-0a66a753-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Certificate: GenAI for UX Designers — Coursera" width="1600" height="1236" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;" />
-            <div class="cert-card-body">
-              <p class="cert-issuer">Coursera</p>
-              <p class="cert-name">GenAI for UX Designers</p>
+            <div class="cert-row">
+              <a class="cert-row__link" href="https://coursera.org/verify/MZJXJA475R5R" target="_blank" rel="noopener noreferrer">
+                <div class="cert-row__text">
+                  <p class="cert-issuer">Coursera</p>
+                  <p class="cert-name">GenAI for UX Designers</p>
+                </div>
+              </a>
+              <button type="button" class="cert-row__thumb" data-cert-full="./assets/img/about/about-0a66a753-1600.webp" aria-label="View full certificate: GenAI for UX Designers">
+                <img src="./assets/img/about/about-0a66a753-800.webp" alt="GenAI for UX Designers certificate" width="800" height="618" loading="lazy" decoding="async" />
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Hobbies -->
-      <div class="about-section">
-        <p class="section-cat-label">Beyond the screen</p>
-        <p style="font-family:'Playfair Display',serif;font-size:20px;font-weight:500;font-style:italic;color:var(--ink);line-height:1.2;margin-bottom:20px;">When I'm not designing, I'm usually doing something creative.</p>
-        <div class="about-text">
-          <p>I sing, and it's one of those things I've done for as long as I can remember. I paint when I need to get out of my head. Photography is how I pay attention to the world around me.</p>
-          <p>And food, I'm genuinely obsessed. Trying new restaurants and cuisines is how I explore a city. There's always a place I'm excited to visit next.</p>
+      <section class="about-beyond about-reveal">
+        <div class="about-beyond__layout">
+          <div class="about-beyond__content">
+            <p class="about-hobbies-quote">When I'm not designing, I'm usually doing something creative.</p>
+            <div class="about-text">
+              <p>I sing, and it's one of those things I've done for as long as I can remember. I paint when I need to get out of my head. Photography is how I pay attention to the world around me.</p>
+              <p>And food, I'm genuinely obsessed. Trying new restaurants and cuisines is how I explore a city. There's always a place I'm excited to visit next.</p>
+            </div>
+          </div>
+          <div class="about-photo-gallery" id="about-photo-gallery">
+            <div class="hero-grid-overlay about-gallery-grid-overlay" aria-hidden="true"></div>
+            <div class="about-photo-gallery__fade">
+              <div class="about-photo-gallery__stage">
+                <div class="about-photo-gallery__item" data-x="110" data-y="44" data-order="4" data-z="10" data-direction="left">
+                  <div class="about-photo-gallery__item-inner">
+                    <img src="./assets/img/about/hobbies/hobbies-resin-800.webp" srcset="./assets/img/about/hobbies/hobbies-resin-800.webp 800w, ./assets/img/about/hobbies/hobbies-resin-1600.webp 1600w" sizes="172px" alt="Resin art with birthday photo" width="800" height="800" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+                <div class="about-photo-gallery__item" data-x="55" data-y="22" data-order="3" data-z="20" data-direction="right">
+                  <div class="about-photo-gallery__item-inner">
+                    <img src="./assets/img/about/hobbies/hobbies-city-800.webp" srcset="./assets/img/about/hobbies/hobbies-city-800.webp 800w, ./assets/img/about/hobbies/hobbies-city-1600.webp 1600w" sizes="172px" alt="City street photography at dusk" width="800" height="800" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+                <div class="about-photo-gallery__item about-photo-gallery__item--landscape" data-x="0" data-y="8" data-order="2" data-z="30" data-direction="right">
+                  <div class="about-photo-gallery__item-inner">
+                    <img src="./assets/img/about/hobbies/hobbies-painting-800.webp" srcset="./assets/img/about/hobbies/hobbies-painting-800.webp 800w, ./assets/img/about/hobbies/hobbies-painting-1600.webp 1600w" sizes="218px" alt="Painting with Tamil script" width="800" height="618" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+                <div class="about-photo-gallery__item" data-x="-55" data-y="32" data-order="1" data-z="40" data-direction="left">
+                  <div class="about-photo-gallery__item-inner">
+                    <img src="./assets/img/about/hobbies/hobbies-sketch-800.webp" srcset="./assets/img/about/hobbies/hobbies-sketch-800.webp 800w, ./assets/img/about/hobbies/hobbies-sketch-1600.webp 1600w" sizes="172px" alt="Pencil sketch portrait" width="800" height="800" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+                <div class="about-photo-gallery__item" data-x="-110" data-y="15" data-order="0" data-z="50" data-direction="left">
+                  <div class="about-photo-gallery__item-inner">
+                    <img src="./assets/img/about/hobbies/hobbies-lippan-800.webp" srcset="./assets/img/about/hobbies/hobbies-lippan-800.webp 800w, ./assets/img/about/hobbies/hobbies-lippan-1600.webp 1600w" sizes="172px" alt="Lippan mirror art" width="800" height="800" loading="lazy" decoding="async" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="cs-img-wrap" style="margin-top:24px;margin-bottom:0;"><img src="./assets/img/about/about-476508f7-1600.webp" srcset="./assets/img/about/about-476508f7-800.webp 800w, ./assets/img/about/about-476508f7-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Aditi's hobbies — drawing, painting, photography, craft" width="1600" height="1400" loading="lazy" decoding="async" style="width:100%;height:auto;display:block;" /></div>
-      </div>
-
+      </section>
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/contact.js ──
@@ -432,41 +683,41 @@ function contactHTML() {
 // ── pages/case/rightwall.js ──
 function rightwallHTML() {
   return `
+    <div class="home-root">
     <div class="cs-root cs-rw">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+
+      ${csBackHTML()}
 
       <!-- Hero -->
-      <div class="cs-hero">
-        <p class="cs-overline">Mobile App · Discovery · End-to-End UX</p>
-        <h1 class="cs-title">RightWall — Helping artists find the right exhibition</h1>
-        <p class="cs-subtitle">Designing a platform that helps emerging visual artists discover exhibitions that match their artistic style, reducing the guesswork and enabling them to quickly evaluate fit.</p>
-      </div>
-
-      <!-- Meta -->
-      <div class="cs-meta">
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Role</p>
-          <p class="cs-meta-value">Product Designer</p>
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Mobile App · Discovery · End-to-End UX</p>
+          <h1 class="cs-title">RightWall — Helping artists find the right exhibition</h1>
+          <p class="cs-subtitle">Designing a platform that helps emerging visual artists discover exhibitions that match their artistic style, reducing the guesswork and enabling them to quickly evaluate fit.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Role</p>
+              <p class="cs-meta-value">Product Designer</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Timeline</p>
+              <p class="cs-meta-value">8 Weeks</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Platform</p>
+              <p class="cs-meta-value">Mobile, Web</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Tools</p>
+              <p class="cs-meta-value">Figma · FigJam · Maze</p>
+            </div>
+          </div>
         </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Timeline</p>
-          <p class="cs-meta-value">8 Weeks</p>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/rightwall-mockup.png" alt="RightWall app mockup" loading="lazy" decoding="async" />
+          </div>
         </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Platform</p>
-          <p class="cs-meta-value">Mobile, Web</p>
-        </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Tools</p>
-          <p class="cs-meta-value">Figma · FigJam · Maze</p>
-        </div>
-      </div>
-
-      <!-- Hero image -->
-      <div class="cs-hero-img">
-        <img src="./assets/img/work/work-11b74571-1226.webp" srcset="./assets/img/work/work-11b74571-800.webp 800w, ./assets/img/work/work-11b74571-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall app — exhibition matching platform" width="1226" height="652" loading="lazy" decoding="async" />
       </div>
 
       <!-- Overview -->
@@ -502,10 +753,22 @@ function rightwallHTML() {
       <!-- Research -->
       <div class="cs-section">
         <p class="cs-section-label">Research</p>
-        <p class="cs-section-title">Understanding the artist's frustration</p>
-        <p class="cs-body">I conducted qualitative research with Philadelphia-based visual artists, starting with a screening survey followed by <strong>9 in-depth interviews</strong> to understand how they find, evaluate, and apply to exhibitions — including challenges before and after applying. I also reviewed existing platforms, grounding the problem in real behavior and identifying where uncertainty and misalignment occur.</p>
-
-        <div class="cs-img-wrap" style="margin-bottom:0;"><img src="./assets/img/case/rightwall/rightwall-b001ec12-1600.webp" srcset="./assets/img/case/rightwall/rightwall-b001ec12-800.webp 800w, ./assets/img/case/rightwall/rightwall-b001ec12-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall affinity mapping — research synthesis" width="1600" height="870" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Understanding the artist's frustration</p>
+            <p class="cs-body">I conducted qualitative research with Philadelphia-based visual artists, starting with a screening survey followed by <strong>9 in-depth interviews</strong> to understand how they find, evaluate, and apply to exhibitions — including challenges before and after applying. I also reviewed existing platforms, grounding the problem in real behavior and identifying where uncertainty and misalignment occur.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: './assets/img/case/rightwall/rightwall-b001ec12-1600.webp',
+              srcset: './assets/img/case/rightwall/rightwall-b001ec12-800.webp 800w, ./assets/img/case/rightwall/rightwall-b001ec12-1600.webp 1600w',
+              alt: 'RightWall affinity mapping — research synthesis',
+              width: 1600,
+              height: 870,
+              fullSrc: './assets/img/case/rightwall/rightwall-b001ec12-1600.webp'
+            })}
+          </div>
+        </div>
 
         <div class="cs-quote">
           <p class="cs-quote-text">"There is a real disconnect between what I love to make, what people want to buy, and what galleries want to show."</p>
@@ -585,33 +848,50 @@ function rightwallHTML() {
         <p class="cs-section-title">From chaos to clarity</p>
         <p class="cs-body">The design focused on three core moments: onboarding that builds a style profile, a discovery feed that feels personal, and an application tracker that reduces cognitive load.</p>
 
-        <div class="cs-features">
-          <div class="cs-feature">
-            <span class="cs-feature-num">01</span>
-            <div>
-              <p class="cs-feature-title">Style profiling onboarding</p>
-              <p class="cs-feature-desc">Artists select visual style tiles instead of abstract categories, allowing the system to understand their work more accurately and personalize recommendations from the start.</p>
-            </div>
+        <div class="cs-feature-split cs-split">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">01</span>
+            <p class="cs-feature-title">Style profiling onboarding</p>
+            <p class="cs-feature-desc">Artists select visual style tiles instead of abstract categories, allowing the system to understand their work more accurately and personalize recommendations from the start.</p>
           </div>
-          <div class="cs-feature">
-            <span class="cs-feature-num">02</span>
-            <div>
-              <p class="cs-feature-title">Match score discovery feed</p>
-              <p class="cs-feature-desc">Exhibitions are ranked by match score and show key requirements, helping users quickly evaluate fit and make confident decisions.</p>
-            </div>
-          </div>
-          <div class="cs-feature">
-            <span class="cs-feature-num">03</span>
-            <div>
-              <p class="cs-feature-title">AI Coach</p>
-              <p class="cs-feature-desc">Provides personalized guidance on where to apply, what to improve, and how to approach opportunities — helping artists make more informed decisions without taking control away from them.</p>
-            </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: './assets/img/case/rightwall/rightwall-prototype.mp4',
+              poster: './assets/img/case/rightwall/rightwall-prototype-screen-800.webp',
+              alt: 'RightWall — style profiling onboarding prototype'
+            })}
           </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/rightwall/rightwall-e66ed4a2-1600.webp" srcset="./assets/img/case/rightwall/rightwall-e66ed4a2-800.webp 800w, ./assets/img/case/rightwall/rightwall-e66ed4a2-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — style profiling onboarding screens" width="1600" height="851" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/rightwall/rightwall-c82f498a-1600.webp" srcset="./assets/img/case/rightwall/rightwall-c82f498a-800.webp 800w, ./assets/img/case/rightwall/rightwall-c82f498a-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — discovery feed with match score cards" width="1600" height="851" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/rightwall/rightwall-577fa039-1600.webp" srcset="./assets/img/case/rightwall/rightwall-577fa039-800.webp 800w, ./assets/img/case/rightwall/rightwall-577fa039-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — AI Coach feature screens" width="1600" height="851" loading="lazy" decoding="async" /></div>
+        <div class="cs-feature-split cs-split cs-split--reverse">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">02</span>
+            <p class="cs-feature-title">Match score discovery feed</p>
+            <p class="cs-feature-desc">Exhibitions are ranked by match score and show key requirements, helping users quickly evaluate fit and make confident decisions.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: './assets/img/case/rightwall/rightwall-prototype-02.mp4',
+              poster: './assets/img/case/rightwall/rightwall-prototype-02-screen-800.webp',
+              alt: 'RightWall — match score discovery feed prototype'
+            })}
+          </div>
+        </div>
+
+        <div class="cs-feature-split cs-split">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">03</span>
+            <p class="cs-feature-title">AI Coach</p>
+            <p class="cs-feature-desc">Provides personalized guidance on where to apply, what to improve, and how to approach opportunities — helping artists make more informed decisions without taking control away from them.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: './assets/img/case/rightwall/rightwall-prototype-03.mp4',
+              poster: './assets/img/case/rightwall/rightwall-prototype-03-screen-800.webp',
+              alt: 'RightWall — AI Coach prototype'
+            })}
+          </div>
+        </div>
 
         <div class="cs-quote" style="margin-top:32px;">
           <p class="cs-quote-text">"Match score — not just a number, but a reason. Every card explains why it's a match."</p>
@@ -650,12 +930,24 @@ function rightwallHTML() {
           </tbody>
         </table>
 
-        <div class="cs-finding">
-          <p class="cs-finding-label">Key Finding</p>
-          <p class="cs-finding-text"><strong>Users didn't notice the AI Coach feature on the home screen.</strong> When participants were exploring the app, most of them skipped this feature because it blended in with other elements and didn't stand out.<br><br>Fix: I redesigned it as a prominent card on the home screen so users can easily see and access it.</p>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <div class="cs-finding">
+              <p class="cs-finding-label">Key Finding</p>
+              <p class="cs-finding-text"><strong>Users didn't notice the AI Coach feature on the home screen.</strong> When participants were exploring the app, most of them skipped this feature because it blended in with other elements and didn't stand out.<br><br>Fix: I redesigned it as a prominent card on the home screen so users can easily see and access it.</p>
+            </div>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: './assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp',
+              srcset: './assets/img/case/rightwall/rightwall-2ab5e8f8-800.webp 800w, ./assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp 1600w',
+              alt: 'RightWall — before and after AI Coach redesign',
+              width: 1600,
+              height: 945,
+              fullSrc: './assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp'
+            })}
+          </div>
         </div>
-
-        <div class="cs-img-wrap" style="margin-top:24px;margin-bottom:0;"><img src="./assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp" srcset="./assets/img/case/rightwall/rightwall-2ab5e8f8-800.webp 800w, ./assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — before and after AI Coach redesign" width="1600" height="945" loading="lazy" decoding="async" /></div>
       </div>
 
       <!-- Reflections -->
@@ -688,33 +980,39 @@ function rightwallHTML() {
         </div>
       </div>
 
-      ${csNextHTML('pathway','Pathway — Accessible Transit for Color-Blind Commuters',['Research','Accessibility Design','WCAG Informed'])}
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/pur.js ──
 function purHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+    <div class="home-root">
+    <div class="cs-root cs-pur">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Ecommerce · Web · Responsive</p>
-        <h1 class="cs-title">PUR Water Purifier — Ecommerce Redesign</h1>
-        <p class="cs-subtitle">Redesigning the PUR desktop experience to enable direct purchasing, drive first-time conversions, and build retention through a filter reminder system.</p>
+      ${csBackHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Ecommerce · Web · Responsive</p>
+          <h1 class="cs-title">PUR Water Purifier — Ecommerce Redesign</h1>
+          <p class="cs-subtitle">Redesigning the PUR desktop experience to enable direct purchasing, drive first-time conversions, and build retention through a filter reminder system.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web, Responsive</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/water-purifier-mockup.png" alt="PUR Water Purifier — ecommerce redesign" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web, Responsive</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
-      </div>
-
-      <div class="cs-hero-img"><img src="./assets/img/work/work-071c820c-1226.webp" srcset="./assets/img/work/work-071c820c-800.webp 800w, ./assets/img/work/work-071c820c-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR Water Purifier — ecommerce redesign" width="1226" height="648" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -729,7 +1027,7 @@ function purHTML() {
           </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/pur/pur-d86c4e6a-1180.webp" srcset="./assets/img/case/pur/pur-d86c4e6a-800.webp 800w, ./assets/img/case/pur/pur-d86c4e6a-1180.webp 1180w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR — broken purchase flow diagram" width="1180" height="379" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--sm" style="margin-bottom:32px;"><img src="./assets/img/case/pur/pur-d86c4e6a-1180.webp" srcset="./assets/img/case/pur/pur-d86c4e6a-800.webp 800w, ./assets/img/case/pur/pur-d86c4e6a-1180.webp 1180w" sizes="(max-width: 768px) 100vw, 900px" alt="PUR — broken purchase flow diagram" width="1180" height="379" loading="lazy" decoding="async" /></div>
 
         <div class="cs-stats">
           <div class="cs-stat">
@@ -845,33 +1143,39 @@ function purHTML() {
         </div>
       </div>
 
-      ${csNextHTML('empowered','Empowered Vote — Civic Engagement Platform',['Civic Tech','UI/UX Design','Product Redesign'])}
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/pathway.js ──
 function pathwayHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+    <div class="home-root">
+    <div class="cs-root cs-pathway">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Research · Accessibility Design · WCAG Informed</p>
-        <h1 class="cs-title">Pathway — Accessible transit for color-blind commuters</h1>
-        <p class="cs-subtitle">Physical transit maps rely on red–green color coding that's nearly invisible to color-blind commuters. Pathway is an app + smart glasses concept that highlights your route on physical station maps using patterns, not color.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Research · Accessibility Design · WCAG Informed</p>
+          <h1 class="cs-title">Pathway — Accessible transit for color-blind commuters</h1>
+          <p class="cs-subtitle">Physical transit maps rely on red–green color coding that's nearly invisible to color-blind commuters. Pathway is an app + smart glasses concept that highlights your route on physical station maps using patterns, not color.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">iOS + Smart Glasses</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/work/pathway-mockup-1600.webp" srcset="./assets/img/work/pathway-mockup-800.webp 800w, ./assets/img/work/pathway-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway — accessible transit companion app mockup" width="1024" height="682" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">iOS + Smart Glasses</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
-      </div>
-
-      <div class="cs-hero-img"><img src="./assets/img/work/work-aecbbef3-1224.webp" srcset="./assets/img/work/work-aecbbef3-800.webp 800w, ./assets/img/work/work-aecbbef3-1224.webp 1224w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway — accessible transit companion app" width="1224" height="650" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -1021,31 +1325,38 @@ function pathwayHTML() {
         </div>
       </div>
 
-      ${csNextHTML('pur','PUR Water Purifier — Ecommerce Redesign',['Ecommerce','Web','Responsive'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/calmnest.js ──
 function calmnestHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-calmnest">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Wellness · Mobile App · Habit Design</p>
-        <h1 class="cs-title">CalmNest — Building a consistent meditation habit</h1>
-        <p class="cs-subtitle">A meditation app designed to help individuals find peace, reduce stress, and establish a lasting daily meditation practice — built on habit-forming psychology and iterative usability testing.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Wellness · Mobile App · Habit Design</p>
+          <h1 class="cs-title">CalmNest — Building a consistent meditation habit</h1>
+          <p class="cs-subtitle">A meditation app designed to help individuals find peace, reduce stress, and establish a lasting daily meditation practice — built on habit-forming psychology and iterative usability testing.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">8 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Mobile</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · Miro · FigJam</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/work/calmnest-mockup-1600.webp" srcset="./assets/img/work/calmnest-mockup-800.webp 800w, ./assets/img/work/calmnest-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest meditation app mockup" width="1024" height="768" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">8 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Mobile</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · Miro · FigJam</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="./assets/img/work/work-ed343775-1419.webp" srcset="./assets/img/work/work-ed343775-800.webp 800w, ./assets/img/work/work-ed343775-1419.webp 1419w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest meditation app — cover" width="1419" height="896" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -1092,30 +1403,77 @@ function calmnestHTML() {
 
       <div class="cs-section">
         <p class="cs-section-label">Scoping</p>
-        <p class="cs-section-title">MoSCoW — prioritizing features</p>
-        <p class="cs-body">I applied the MoSCoW method to organize features into Must-Have, Should-Have, Could-Have, and Won't-Have categories. This prioritization kept the core experience focused while leaving room for future enhancements.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/calmnest/calmnest-991aaa8e-1436.webp" srcset="./assets/img/case/calmnest/calmnest-991aaa8e-800.webp 800w, ./assets/img/case/calmnest/calmnest-991aaa8e-1436.webp 1436w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest MoSCoW feature prioritization" width="1436" height="750" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">MoSCoW — prioritizing features</p>
+            <p class="cs-body">I applied the MoSCoW method to organize features into Must-Have, Should-Have, Could-Have, and Won't-Have categories. This prioritization kept the core experience focused while leaving room for future enhancements.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: './assets/img/case/calmnest/calmnest-991aaa8e-1436.webp',
+              srcset: './assets/img/case/calmnest/calmnest-991aaa8e-800.webp 800w, ./assets/img/case/calmnest/calmnest-991aaa8e-1436.webp 1436w',
+              alt: 'CalmNest MoSCoW feature prioritization',
+              width: 1436,
+              height: 750,
+              fullSrc: './assets/img/case/calmnest/calmnest-991aaa8e-1436.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Strategy</p>
-        <p class="cs-section-title">Storyboard — mapping the user journey</p>
-        <p class="cs-body">I began by creating a storyboard that visualizes the complete user journey — the trigger that prompts app use, the actions users take, and the rewards and investments that encourage them to return. Each frame ensured every step aligned with the habit-forming framework.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/calmnest/calmnest-c174835c-577.webp" srcset="./assets/img/case/calmnest/calmnest-c174835c-577.webp 577w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest storyboard — habit forming user journey" width="577" height="690" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Storyboard — mapping the user journey</p>
+            <p class="cs-body">I began by creating a storyboard that visualizes the complete user journey — the trigger that prompts app use, the actions users take, and the rewards and investments that encourage them to return. Each frame ensured every step aligned with the habit-forming framework.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: './assets/img/case/calmnest/calmnest-c174835c-577.webp',
+              srcset: './assets/img/case/calmnest/calmnest-c174835c-577.webp 577w',
+              alt: 'CalmNest storyboard — habit forming user journey',
+              width: 577,
+              height: 690,
+              fullSrc: './assets/img/case/calmnest/calmnest-c174835c-577.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Structure</p>
         <p class="cs-section-title">User Flow — mapping key paths</p>
         <p class="cs-body">I designed user flows to outline the paths users would take to complete key tasks — onboarding, starting a session, and tracking progress. These flows ensured efficient, barrier-free navigation throughout the app.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/calmnest/calmnest-0787f7e0-1165.webp" srcset="./assets/img/case/calmnest/calmnest-0787f7e0-800.webp 800w, ./assets/img/case/calmnest/calmnest-0787f7e0-1165.webp 1165w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest user flow diagram" width="1165" height="750" loading="lazy" decoding="async" /></div>
+        ${csZoomImgHTML({
+          src: './assets/img/case/calmnest/calmnest-0787f7e0-1165.webp',
+          srcset: './assets/img/case/calmnest/calmnest-0787f7e0-800.webp 800w, ./assets/img/case/calmnest/calmnest-0787f7e0-1165.webp 1165w',
+          alt: 'CalmNest user flow diagram',
+          width: 1165,
+          height: 750,
+          fullSrc: './assets/img/case/calmnest/calmnest-0787f7e0-1165.webp',
+          wrapClass: 'cs-img-wrap--md'
+        })}
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Skeleton</p>
-        <p class="cs-section-title">Moodboard and style guide</p>
-        <p class="cs-body">The CalmNest moodboard was designed to reflect a serene, calming atmosphere with soft pastels, minimalist elements, and smooth gradients — evoking feelings of peace and relaxation. The style guide established calming color tones, clean modern typography, and simple intuitive icons, ensuring a cohesive and tranquil experience throughout.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/calmnest/calmnest-53d0be08-1600.webp" srcset="./assets/img/case/calmnest/calmnest-53d0be08-800.webp 800w, ./assets/img/case/calmnest/calmnest-53d0be08-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest moodboard and color palette" width="1600" height="813" loading="lazy" decoding="async" /></div>
+        <div class="cs-split cs-split--reverse">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Moodboard and style guide</p>
+            <p class="cs-body">The CalmNest moodboard was designed to reflect a serene, calming atmosphere with soft pastels, minimalist elements, and smooth gradients — evoking feelings of peace and relaxation. The style guide established calming color tones, clean modern typography, and simple intuitive icons, ensuring a cohesive and tranquil experience throughout.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: './assets/img/case/calmnest/calmnest-53d0be08-1600.webp',
+              srcset: './assets/img/case/calmnest/calmnest-53d0be08-800.webp 800w, ./assets/img/case/calmnest/calmnest-53d0be08-1600.webp 1600w',
+              alt: 'CalmNest moodboard and color palette',
+              width: 1600,
+              height: 813,
+              fullSrc: './assets/img/case/calmnest/calmnest-53d0be08-1600.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
@@ -1170,9 +1528,10 @@ function calmnestHTML() {
 <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/calmnest/calmnest-11d12175-1600.webp" srcset="./assets/img/case/calmnest/calmnest-11d12175-800.webp 800w, ./assets/img/case/calmnest/calmnest-11d12175-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest SCAMPER iterations — before and after improvements" width="1600" height="697" loading="lazy" decoding="async" /></div>
       </div>
 
-      ${csNextHTML('hydration','Hydration App — Daily Intake Tracker',['Health','Mobile','Habit Design'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/hydration.js ──
@@ -1294,23 +1653,29 @@ function hydrationHTML() {
 // ── pages/case/genai.js ──
 function genaiHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-genai">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Generative AI · User Research · Education</p>
-        <h1 class="cs-title">Gen AI Study Buddy — Understanding how students trust AI</h1>
-        <p class="cs-subtitle">As AI tools increasingly influence how students study, this project examined how GenAI can support learning without replacing human understanding — making AI-driven study experiences more adaptive, personalized, and trustworthy.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Generative AI · User Research · Education</p>
+          <h1 class="cs-title">Gen AI Study Buddy — Understanding how students trust AI</h1>
+          <p class="cs-subtitle">As AI tools increasingly influence how students study, this project examined how GenAI can support learning without replacing human understanding — making AI-driven study experiences more adaptive, personalized, and trustworthy.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UX Researcher</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Year</p><p class="cs-meta-value">2024</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeframe</p><p class="cs-meta-value">14 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Type</p><p class="cs-meta-value">Research · AI Education</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/work/work-5058dc6c-1600.webp" srcset="./assets/img/work/work-5058dc6c-800.webp 800w, ./assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — cover" width="1600" height="1200" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UX Researcher</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Year</p><p class="cs-meta-value">2024</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeframe</p><p class="cs-meta-value">14 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Type</p><p class="cs-meta-value">Research · AI Education</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="./assets/img/work/work-5058dc6c-1600.webp" srcset="./assets/img/work/work-5058dc6c-800.webp 800w, ./assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — cover" width="1600" height="1200" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Problem</p>
@@ -1344,7 +1709,7 @@ function genaiHTML() {
             <p class="cs-pain-desc">Research focused on management students at Thomas Jefferson University — tech-savvy, academically engaged, and frequently exposed to digital study platforms.</p>
           </div>
         </div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/genai/genai-3a60a5f7-1167.webp" srcset="./assets/img/case/genai/genai-3a60a5f7-800.webp 800w, ./assets/img/case/genai/genai-3a60a5f7-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Users, Goals, Environments Venn diagram" width="1167" height="826" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--md" style="margin-bottom:32px;"><img src="./assets/img/case/genai/genai-3a60a5f7-1167.webp" srcset="./assets/img/case/genai/genai-3a60a5f7-800.webp 800w, ./assets/img/case/genai/genai-3a60a5f7-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Users, Goals, Environments Venn diagram" width="1167" height="826" loading="lazy" decoding="async" /></div>
       </div>
 
       <div class="cs-section">
@@ -1373,7 +1738,7 @@ function genaiHTML() {
             <p class="cs-pain-desc">Deeper insights yet to be uncovered — requiring open-ended exploration rather than hypothesis testing.</p>
           </div>
         </div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/genai/genai-f8e15bd7-1382.webp" srcset="./assets/img/case/genai/genai-f8e15bd7-800.webp 800w, ./assets/img/case/genai/genai-f8e15bd7-1382.webp 1382w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Known/Unknown secondary research synthesis framework" width="1382" height="1155" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--md" style="margin-bottom:32px;"><img src="./assets/img/case/genai/genai-f8e15bd7-1382.webp" srcset="./assets/img/case/genai/genai-f8e15bd7-800.webp 800w, ./assets/img/case/genai/genai-f8e15bd7-1382.webp 1382w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Known/Unknown secondary research synthesis framework" width="1382" height="1155" loading="lazy" decoding="async" /></div>
       </div>
 
       <div class="cs-section">
@@ -1464,171 +1829,208 @@ function genaiHTML() {
         </div>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/empowered.js ──
 function empoweredHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-ev">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Civic Tech · UI/UX Design · Product Redesign</p>
-        <h1 class="cs-title">Empowered Vote — Redesigning civic discovery for first-time voters</h1>
-        <p class="cs-subtitle">How I reimagined the onboarding and browsing experience at Empowered Vote — a civic-tech platform — to reduce overwhelm and make political information feel approachable.</p>
+      ${csBackHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Civic Tech · Web · Product Design</p>
+          <h1 class="cs-title">Empowered Essentials — Helping citizens find and understand their representatives</h1>
+          <p class="cs-subtitle">Non-partisan tools to see who represents you from city council to federal level — no login, no partisan framing.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">Jan 2026 – Present</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web (mobile-first)</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · FigJam · Maze</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/empoweredvault-mockup.png" alt="Empowered Essentials app mockup" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">Ongoing</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Empowered Vote</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · FigJam</p></div>
-      </div>
-
-<div class="cs-hero-img" style="margin-bottom:56px;"><img src="./assets/img/work/work-972f2aa7-1226.webp" srcset="./assets/img/work/work-972f2aa7-800.webp 800w, ./assets/img/work/work-972f2aa7-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — civic engagement platform redesign hero" width="1226" height="648" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
-        <p class="cs-section-label">The Problem</p>
-        <p class="cs-section-title">Civic information is hard to navigate</p>
-        <p class="cs-body">First-time users arriving at Empowered Vote were immediately confronted with dense lists, unclear filtering, and no clear entry point. The platform had powerful data — but no onboarding to ease new users into it. People were leaving before finding their own representatives.</p>
-
-        <div class="cs-quote">
-          <p class="cs-quote-text">"I didn't know where to start. There were so many names and I didn't know who represented me."</p>
-          <p class="cs-quote-attr">First-time voter — usability session</p>
+        <p class="cs-section-label">Overview</p>
+        <div class="cs-two-col">
+          <div>
+            <p class="cs-section-title">The Problem</p>
+            <p class="cs-body">Most people don't know who represents them. Civic information is scattered across government sites and news — often written for an informed audience or filtered through partisan lenses.</p>
+          </div>
+          <div>
+            <p class="cs-section-title">The Solution</p>
+            <p class="cs-body">Empowered Essentials is the platform entry point: enter a ZIP code and instantly see every representative — from city council to federal — with voting records, funding sources, and policy positions. No login required.</p>
+          </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/empowered/empowered-a21cba44-924.webp" srcset="./assets/img/case/empowered/empowered-a21cba44-800.webp 800w, ./assets/img/case/empowered/empowered-a21cba44-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — original design before redesign" width="924" height="648" loading="lazy" decoding="async" /></div>
+        <div class="cs-pain-grid" style="margin-top:32px;">
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 01</p>
+            <p class="cs-pain-title">No login required</p>
+            <p class="cs-pain-desc">Deliver value to anonymous users immediately — authentication only for deeper actions like messaging or saving.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 02</p>
+            <p class="cs-pain-title">Data completeness</p>
+            <p class="cs-pain-desc">Many profiles had incomplete policy data — the design had to work with partial information, not assume full coverage.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 03</p>
+            <p class="cs-pain-title">Near-instant lookup</p>
+            <p class="cs-pain-desc">ZIP code search needed to feel immediate, with profile pages loading progressively rather than all at once.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 04</p>
+            <p class="cs-pain-title">State-to-state variation</p>
+            <p class="cs-pain-desc">Different states have different elected offices — structure and UI needed to flex by location.</p>
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Research</p>
-        <p class="cs-section-title">What we learned from users</p>
-        <p class="cs-body">Through user interviews and usability sessions with first-time voters, four recurring pain points emerged.</p>
+        <p class="cs-section-title">What stops people from engaging</p>
+        <p class="cs-body">Before designing screens, the team focused on trust and time — the two barriers that matter most for a busy user who wants to vote responsibly without wading through biased sources.</p>
 
         <div class="cs-pain-grid">
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 01</p>
-            <p class="cs-pain-title">No clear starting point</p>
-            <p class="cs-pain-desc">Users didn't know where to begin. The homepage lacked a clear call to action or orientation step.</p>
+            <p class="cs-pain-num">Finding 01</p>
+            <p class="cs-pain-title">Trust is the biggest barrier</p>
+            <p class="cs-pain-desc">Users assumed civic information would be biased and disengaged rather than try to verify it.</p>
           </div>
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 02</p>
-            <p class="cs-pain-title">Filter overload</p>
-            <p class="cs-pain-desc">The sidebar presented too many filters upfront, creating decision paralysis before users had explored anything.</p>
+            <p class="cs-pain-num">Finding 02</p>
+            <p class="cs-pain-title">Time is the second barrier</p>
+            <p class="cs-pain-desc">People would engage only if useful information appeared in seconds, not minutes.</p>
           </div>
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 03</p>
-            <p class="cs-pain-title">Trust gap</p>
-            <p class="cs-pain-desc">Candidate listings felt like raw data dumps. Users wanted context and a human summary before engaging further.</p>
+            <p class="cs-pain-num">Finding 03</p>
+            <p class="cs-pain-title">Local reps are least understood</p>
+            <p class="cs-pain-desc">Awareness dropped sharply for local offices — most users could name a senator but not a city council member.</p>
           </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 04</p>
-            <p class="cs-pain-title">Visual hierarchy missing</p>
-            <p class="cs-pain-desc">Federal, state, and local roles were displayed with equal visual weight, making it hard to orient by relevance.</p>
-          </div>
-        </div>
-
-      </div>
-
-
-
-      <div class="cs-section">
-        <p class="cs-section-label">Key Design Changes</p>
-        <p class="cs-section-title">From cluttered to clear</p>
-        <p class="cs-body">I restructured the experience around a simple entry point: find your representatives first, then explore from a position of familiarity. Three changes had the most impact.</p>
-
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 01</p>
-          <p class="cs-decision-title">A dedicated entry point instead of a filter panel</p>
-          <p class="cs-decision-desc">Before, users landed on a dense filter panel with an undifferentiated candidate list. After, they land on a dedicated "Find Your Representatives" step with a simple address input — a clear, focused action.</p>
-        </div>
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 02</p>
-          <p class="cs-decision-title">Clear government-level hierarchy</p>
-          <p class="cs-decision-desc">Before, all government levels were displayed with equal visual weight and no grouping logic. After, a clear hierarchy — Local → State → Federal — organises representatives into collapsible sections the user can navigate with context.</p>
-        </div>
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 03</p>
-          <p class="cs-decision-title">Human summary before data</p>
-          <p class="cs-decision-desc">Before, the profile page immediately led with policy data and tag clouds. After, it opens with a plain-language summary of the representative, then surfaces issue tags and comparative views — reducing cognitive load at the most critical moment.</p>
         </div>
       </div>
 
       <div class="cs-section">
-        <p class="cs-section-label">Final Designs</p>
-        <p class="cs-section-title">The redesigned experience</p>
-        <p class="cs-body">The final screens cover three key moments in the user journey: landing and discovery, the representatives browse view, and the representative profile page.</p>
+        <p class="cs-section-label">Design</p>
+        <p class="cs-section-title">Speed, clarity, and neutrality</p>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/empowered/empowered-acd48b2f-924.webp" srcset="./assets/img/case/empowered/empowered-acd48b2f-800.webp 800w, ./assets/img/case/empowered/empowered-acd48b2f-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 1: Landing and Find Your Representatives" width="924" height="648" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/empowered/empowered-fd673c46-924.webp" srcset="./assets/img/case/empowered/empowered-fd673c46-800.webp 800w, ./assets/img/case/empowered/empowered-fd673c46-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 2: Browse representatives by government level" width="924" height="814" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/empowered/empowered-84e5b99b-924.webp" srcset="./assets/img/case/empowered/empowered-84e5b99b-800.webp 800w, ./assets/img/case/empowered/empowered-84e5b99b-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 3: Representative profile page" width="924" height="1074" loading="lazy" decoding="async" /></div>
-      </div>
+        <div class="cs-split cs-split--reverse cs-ev-design">
+          <div class="cs-split__text">
+            <div class="cs-decision">
+              <p class="cs-decision-num">01</p>
+              <p class="cs-decision-title">Design for responsible voting, faster</p>
+              <p class="cs-decision-desc">Every decision was filtered through one question: does this help our user vote responsibly faster, or slow her down?</p>
+            </div>
 
-      <div class="cs-section">
-        <p class="cs-section-label">Visual Direction</p>
-        <p class="cs-section-title">Approachable, not sterile</p>
-        <p class="cs-body">The original design used a muted palette that felt unfinished. The redesign shifts to a clean teal-and-white system — trustworthy and civic without being stiff. Typography and spacing were opened up to reduce cognitive load per page.</p>
+            <div class="cs-decision">
+              <p class="cs-decision-num">02</p>
+              <p class="cs-decision-title">Progressive disclosure on profiles</p>
+              <p class="cs-decision-desc">Surface three essentials immediately — who they are, what they stand for, how to reach them — and move everything else one tap deeper.</p>
+            </div>
 
-        <div class="cs-pain-grid">
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 01</p>
-            <p class="cs-pain-title">Teal and white system</p>
-            <p class="cs-pain-desc">A clean, trustworthy color palette that feels civic without being government-stiff.</p>
+            <div class="cs-decision">
+              <p class="cs-decision-num">03</p>
+              <p class="cs-decision-title">A visual trust layer</p>
+              <p class="cs-decision-desc">No party color-coding, no loaded language — a calm, consistent tone applied equally across every profile. Compass integration includes thoughtful empty states when stance data is missing.</p>
+            </div>
           </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 02</p>
-            <p class="cs-pain-title">Generous whitespace</p>
-            <p class="cs-pain-desc">Spacing was opened up across all views to reduce the visual density that was causing overwhelm.</p>
-          </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 03</p>
-            <p class="cs-pain-title">Card-based grouping</p>
-            <p class="cs-pain-desc">Representatives are grouped into cards with consistent structure, making scanning and comparison faster.</p>
-          </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 04</p>
-            <p class="cs-pain-title">Collapsible sections</p>
-            <p class="cs-pain-desc">Government levels are collapsible, letting users control the complexity they engage with at any moment.</p>
+          <div class="cs-split__media">
+            ${csMacbookMockupHTML({
+              videoSrc: './assets/img/case/empowered/empowered-prototype.mp4',
+              poster: './assets/img/case/empowered/empowered-prototype-screen-800.webp',
+              alt: 'Empowered Essentials — web prototype demo'
+            })}
           </div>
         </div>
-
       </div>
 
       <div class="cs-section">
-        <p class="cs-section-label">Outcome</p>
-        <p class="cs-section-title">Results and reflection</p>
-        <p class="cs-body">The redesign reduced the first-time user path from a confusing multi-panel experience to a single focused entry point. Structured hierarchy across government levels made browsing significantly more intuitive. Replacing data-first profiles with human summaries lowered the cognitive barrier at the most critical decision moment.</p>
-        <p class="cs-body">If I were to continue this work, I'd focus on mobile-first refinements, localization for non-English speakers, and deeper exploration of the candidate comparison flow.</p>
+        <p class="cs-section-label">Collaboration</p>
+        <p class="cs-section-title">Built with engineering from day one</p>
+        <p class="cs-body">Before designing profiles, engineering built a Data Explorer listing every backend field — I used it to decide what to surface instead of designing around assumptions. I stayed involved through QA, catching issues like an FAQ expand button that scrolled users back to the top. I also built the Compass Graph as a reusable design-system component for the wider team.</p>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      <div class="cs-section">
+        <p class="cs-section-label">Testing</p>
+        <p class="cs-section-title">Validated with real citizens</p>
+        <p class="cs-body">Usability sessions with citizens in Bloomington, Indiana — the platform's pilot city — included the full cross-functional squad. Findings shaped the information hierarchy, Compass onboarding, and authentication prompts.</p>
+      </div>
+
+      <div class="cs-section">
+        <p class="cs-section-label">Impact</p>
+        <div class="cs-stats">
+          <div class="cs-stat">
+            <p class="cs-stat-num">0 sec</p>
+            <p class="cs-stat-label">Login required to get value</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">3</p>
+            <p class="cs-stat-label">Core data points surfaced instantly on every profile</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">100%</p>
+            <p class="cs-stat-label">Non-partisan visual treatment across all profiles</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">Live</p>
+            <p class="cs-stat-label">In active development and testing on the Empowered Vote platform</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <p class="cs-section-label">Reflection</p>
+        <p class="cs-section-title">Designing for trust as a material</p>
+        <p class="cs-body">Trust had to be earned in every visual and content choice — there was no assumed goodwill. Incomplete politician data reinforced designing for what exists, not what we wished we had.</p>
+        <p class="cs-body">Next up: extending the same principles of speed, neutrality, and trust into a native mobile app.</p>
+      </div>
+
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/barriers.js ──
 function barriersHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-barriers">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Qualitative Research · Arts · User Interviews</p>
-        <h1 class="cs-title">Barriers in Exhibition Opportunities for Emerging Artists</h1>
-        <p class="cs-subtitle">A research study examining the fragmented landscape for emerging visual artists in Philadelphia — understanding why access to exhibition opportunities remains difficult, and what artists actually need to move forward.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Qualitative Research · Arts · User Interviews</p>
+          <h1 class="cs-title">Barriers in Exhibition Opportunities for Emerging Artists</h1>
+          <p class="cs-subtitle">A research study examining the fragmented landscape for emerging visual artists in Philadelphia — understanding why access to exhibition opportunities remains difficult, and what artists actually need to move forward.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Domain</p><p class="cs-meta-value">Emerging Visual Artists</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Location</p><p class="cs-meta-value">Philadelphia, PA</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Methods</p><p class="cs-meta-value">Interviews · Secondary Research</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Participants</p><p class="cs-meta-value">9 Artists · 2 Stakeholders</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/work/work-270c3aa2-1500.webp" srcset="./assets/img/work/work-270c3aa2-800.webp 800w, ./assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities — gallery visitor" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Domain</p><p class="cs-meta-value">Emerging Visual Artists</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Location</p><p class="cs-meta-value">Philadelphia, PA</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Methods</p><p class="cs-meta-value">Interviews · Secondary Research</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Participants</p><p class="cs-meta-value">9 Artists · 2 Stakeholders</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="./assets/img/work/work-270c3aa2-1500.webp" srcset="./assets/img/work/work-270c3aa2-800.webp 800w, ./assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities — gallery visitor" width="1500" height="1000" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">01 — Problem Space</p>
@@ -1759,7 +2161,55 @@ function barriersHTML() {
         <p class="cs-section-label">07 — Competitive Analysis</p>
         <p class="cs-section-title">What exists today isn't enough</p>
         <p class="cs-body">Existing platforms help artists stay aware, but don't help them act with confidence. None of them bridge the gap between creating art and getting it shown. Platforms like CaFÉ, Art Jobs, and ZAPP provide listings but lack style matching, curator transparency, and meaningful feedback systems — all things artists said they need most.</p>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="./assets/img/case/barriers/barriers-afb6543c-1167.webp" srcset="./assets/img/case/barriers/barriers-afb6543c-800.webp 800w, ./assets/img/case/barriers/barriers-afb6543c-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Competitive analysis — RightWall vs CaFÉ vs Art Jobs vs ZAPP" width="1167" height="665" loading="lazy" decoding="async" /></div>
+
+        <div class="cs-compare-wrap">
+          <table class="cs-compare-table">
+            <thead>
+              <tr>
+                <th scope="col">Features</th>
+                <th scope="col" class="cs-compare-table__highlight">RightWall</th>
+                <th scope="col">CaFÉ</th>
+                <th scope="col">Art Jobs</th>
+                <th scope="col">ZAPP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Curator &amp; Show Profile Transparency</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+              <tr>
+                <td>Style matching feature</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+              <tr>
+                <td>Verified exhibition calls</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+              </tr>
+              <tr>
+                <td>Application feedback system</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cs-compare-legend">
+            <span><span class="cs-compare-status cs-compare-status--yes" aria-hidden="true">✓</span> Available</span>
+            <span><span class="cs-compare-status cs-compare-status--partial" aria-hidden="true"></span> Partially Available</span>
+            <span><span class="cs-compare-status cs-compare-status--no" aria-hidden="true"></span> Not Available</span>
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
@@ -1796,31 +2246,38 @@ function barriersHTML() {
         <p class="cs-body">This research directly shaped the design of RightWall — a platform built to surface style fit, reduce guesswork, and give emerging artists the confidence to apply to the right exhibitions.</p>
       </div>
 
-      ${csNextHTML('aidesign','AI Design Tool Comparison',['AI','Comparison','Tools'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── pages/case/aidesign.js ──
 function aidesignHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-aidesign">
 
-      <div class="cs-hero">
-        <p class="cs-overline">AI · Comparison · Tools</p>
-        <h1 class="cs-title">Can AI tools handle identity-driven products? A RightWall stress test.</h1>
-        <p class="cs-subtitle">Five AI tools. Three screens. One identity-driven product. An evaluation of how well current AI design tools handle aesthetic specificity when given only text prompts.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">AI · Comparison · Tools</p>
+          <h1 class="cs-title">Can AI tools handle identity-driven products? A RightWall stress test.</h1>
+          <p class="cs-subtitle">Five AI tools. Three screens. One identity-driven product. An evaluation of how well current AI design tools handle aesthetic specificity when given only text prompts.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">1–2 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools Tested</p><p class="cs-meta-value">5 AI tools</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Screens</p><p class="cs-meta-value">3 screens</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Input</p><p class="cs-meta-value">Text prompts only</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/work/work-5c6230c9-1500.webp" srcset="./assets/img/work/work-5c6230c9-800.webp 800w, ./assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison — cover" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">1–2 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools Tested</p><p class="cs-meta-value">5 AI tools</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Screens</p><p class="cs-meta-value">3 screens</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Input</p><p class="cs-meta-value">Text prompts only</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="./assets/img/work/work-5c6230c9-1500.webp" srcset="./assets/img/work/work-5c6230c9-800.webp 800w, ./assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison — cover" width="1500" height="1000" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">01 — The Product</p>
@@ -2043,9 +2500,10 @@ function aidesignHTML() {
         </div>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 // ── app.js ──
@@ -2072,31 +2530,544 @@ function aidesignHTML() {
       return 'home';
     }
 
-    function goTo(page) {
+    let _transitionBusy = false;
+
+    function routeDepth(page) {
+      if (page === 'home') return 0;
+      if (CS_PAGES.includes(page)) return 2;
+      return 1;
+    }
+
+    function shouldPageTransition(from, to) {
+      if (from === to) return false;
+      if (document.body.classList.contains('intro-active')) return false;
+      if (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+      return true;
+    }
+
+    function getTransitionDirection(from, to) {
+      return routeDepth(to) >= routeDepth(from) ? 'forward' : 'back';
+    }
+
+    function setRouteHash(page) {
       window.location.hash = page === 'home' ? '' : page;
-      // hashchange event fires render() automatically
+    }
+
+    function waitPanelAnimation(panel, ms) {
+      return new Promise(function(resolve) {
+        if (!panel) {
+          resolve();
+          return;
+        }
+        var done = false;
+        function finish() {
+          if (done) return;
+          done = true;
+          panel.removeEventListener('animationend', onEnd);
+          clearTimeout(fallback);
+          resolve();
+        }
+        function onEnd(e) {
+          if (e.target !== panel) return;
+          finish();
+        }
+        panel.addEventListener('animationend', onEnd);
+        var fallback = setTimeout(finish, ms || 700);
+      });
+    }
+
+    function transitionCover(direction) {
+      var el = document.getElementById('page-transition');
+      if (!el) return Promise.resolve();
+      el.hidden = false;
+      el.setAttribute('aria-hidden', 'false');
+      el.className = 'page-transition page-transition--' + direction;
+      el.classList.remove('is-covering', 'is-revealing');
+      document.body.classList.add('transition-active');
+      void el.offsetWidth;
+      el.classList.add('is-covering');
+      return waitPanelAnimation(el.querySelector('.page-transition__panel'), 700);
+    }
+
+    function transitionReveal(direction) {
+      var el = document.getElementById('page-transition');
+      if (!el) return Promise.resolve();
+      el.className = 'page-transition page-transition--' + direction;
+      el.classList.remove('is-covering');
+      void el.offsetWidth;
+      el.classList.add('is-revealing');
+      return waitPanelAnimation(el.querySelector('.page-transition__panel'), 700).then(function() {
+        el.hidden = true;
+        el.setAttribute('aria-hidden', 'true');
+        el.className = 'page-transition';
+        document.body.classList.remove('transition-active');
+      });
+    }
+
+    function goTo(page) {
+      var target = page === 'home' ? 'home' : page;
+      var from = currentRoute();
+      if (from === target) return;
+      if (!shouldPageTransition(from, target)) {
+        setRouteHash(target);
+        return;
+      }
+      if (_transitionBusy) return;
+      _transitionBusy = true;
+      var direction = getTransitionDirection(from, target);
+      transitionCover(direction)
+        .then(function() {
+          setRouteHash(target);
+          return render(target);
+        })
+        .then(function() {
+          return transitionReveal(direction);
+        })
+        .finally(function() {
+          _transitionBusy = false;
+        });
     }
 
     // Track which Work category the user came from before opening a case study
-    window._lastWorkCat = 'featured';
+    window._lastWorkCat = 'accessibility';
 
     function goToWork(cat) {
-      // Use stored source category if 'auto', otherwise use explicit cat
       var activeCat = (cat === 'auto') ? window._lastWorkCat : cat;
-      window.location.hash = 'work';
-      setTimeout(function() {
-        var tabs = document.querySelectorAll('.cat-tab');
-        var catKey = activeCat;
-        var target = null;
-        if (catKey === 'all')      target = [...tabs].find(b => b.textContent.includes('UI/UX'));
-        else if (catKey === 'research') target = [...tabs].find(b => b.textContent.includes('Research'));
-        else if (catKey === 'ai')  target = [...tabs].find(b => b.textContent.includes('AI'));
-        else                       target = [...tabs].find(b => b.textContent.includes('Featured'));
-        if (target) window.switchCat(catKey, target);
-      }, 80);
+      if (activeCat === 'featured') activeCat = 'accessibility';
+      window._pendingWorkCat = activeCat || 'ai';
+      goTo('work');
+    }
+
+    function setWorkCatActive(cat) {
+      document.querySelectorAll('.work-cat-nav__item').forEach(function(btn) {
+        btn.classList.toggle('is-active', btn.dataset.cat === cat);
+      });
+    }
+
+    let _currentWorkCat = null;
+    let _workSwitchTimer = null;
+
+    function reindexVisibleFigures() {
+      var visible = document.querySelectorAll('.work-card-figure.is-visible');
+      visible.forEach(function(fig, i) {
+        fig.style.zIndex = String(i + 1);
+        if (fig.classList.contains('is-entering')) {
+          fig.style.animationDelay = (prefersReducedMotion() ? 0 : i * 100) + 'ms';
+        } else {
+          fig.style.animationDelay = '';
+        }
+        var card = fig.querySelector('.project-card');
+        if (!card) return;
+        if (i === 0) card.style.transform = 'rotate(0deg)';
+        else if ((i + 1) % 2 === 0) card.style.transform = 'rotate(-1deg)';
+        else card.style.transform = 'rotate(1deg)';
+      });
+    }
+
+    function updateWorkStackHeight() {
+      var stack = document.querySelector('.work-stack');
+      if (!stack) return;
+      var count = document.querySelectorAll('.work-card-figure.is-visible').length;
+      stack.style.setProperty('--work-card-count', String(Math.max(count, 1)));
+      document.documentElement.style.setProperty('--work-card-count', String(Math.max(count, 1)));
+    }
+
+    function applyWorkCat(cat, animate) {
+      var stack = document.querySelector('.work-stack');
+      var figures = document.querySelectorAll('.work-card-figure');
+      if (!stack || !figures.length) return;
+
+      figures.forEach(function(fig) {
+        var show = fig.dataset.cat === cat;
+        fig.classList.remove('is-exiting', 'is-entering', 'is-visible');
+        if (show) {
+          fig.classList.add('is-visible');
+          if (animate) fig.classList.add('is-entering');
+        }
+      });
+      reindexVisibleFigures();
+      updateWorkStackHeight();
+      setWorkCatActive(cat);
+      _currentWorkCat = cat;
+      window._lastWorkCat = cat;
+
+      if (animate) {
+        setTimeout(function() {
+          figures.forEach(function(fig) { fig.classList.remove('is-entering'); });
+        }, 600);
+      }
+    }
+
+    function switchWorkCat(cat) {
+      if (cat === _currentWorkCat) return;
+      var stack = document.querySelector('.work-stack');
+      var figures = document.querySelectorAll('.work-card-figure');
+      if (!stack || !figures.length) return;
+
+      var reduced = prefersReducedMotion();
+      var outgoing = document.querySelectorAll('.work-card-figure.is-visible');
+
+      if (reduced || !outgoing.length) {
+        applyWorkCat(cat, false);
+        return;
+      }
+
+      stack.classList.add('work-stack--switching');
+      outgoing.forEach(function(fig) { fig.classList.add('is-exiting'); });
+
+      clearTimeout(_workSwitchTimer);
+      _workSwitchTimer = setTimeout(function() {
+        applyWorkCat(cat, true);
+        stack.classList.remove('work-stack--switching');
+      }, 280);
+    }
+
+    var _aboutRevealObserver = null;
+    var _aboutPhotoObserver = null;
+    var _certLightboxKeyHandler = null;
+    var _lightboxClickHandler = null;
+    var _lightboxInitialized = false;
+    var _aboutGalleryObserver = null;
+    var _aboutGallerySpreadTimer = null;
+    var _aboutGalleryResizeHandler = null;
+    var _aboutGalleryResizeTimer = null;
+
+    function teardownAboutScroll() {
+      if (_aboutRevealObserver) {
+        _aboutRevealObserver.disconnect();
+        _aboutRevealObserver = null;
+      }
+      if (_aboutPhotoObserver) {
+        _aboutPhotoObserver.disconnect();
+        _aboutPhotoObserver = null;
+      }
+      if (_aboutGalleryObserver) {
+        _aboutGalleryObserver.disconnect();
+        _aboutGalleryObserver = null;
+      }
+      if (_aboutGallerySpreadTimer) {
+        clearTimeout(_aboutGallerySpreadTimer);
+        _aboutGallerySpreadTimer = null;
+      }
+      if (_aboutGalleryResizeHandler) {
+        window.removeEventListener('resize', _aboutGalleryResizeHandler);
+        _aboutGalleryResizeHandler = null;
+      }
+      if (_aboutGalleryResizeTimer) {
+        clearTimeout(_aboutGalleryResizeTimer);
+        _aboutGalleryResizeTimer = null;
+      }
+      if (_certLightboxKeyHandler) {
+        document.removeEventListener('keydown', _certLightboxKeyHandler);
+        _certLightboxKeyHandler = null;
+      }
+      var certLightbox = document.getElementById('cert-lightbox');
+      if (certLightbox) {
+        certLightbox.hidden = true;
+        certLightbox.setAttribute('aria-hidden', 'true');
+        certLightbox.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+      var photoGallery = document.getElementById('about-photo-gallery');
+      if (photoGallery) {
+        photoGallery.classList.remove('is-visible', 'is-spread');
+      }
+      document.querySelectorAll('.about-reveal.is-visible').forEach(function(el) {
+        el.classList.remove('is-visible');
+        el.style.animationDelay = '';
+      });
+    }
+
+    function initAboutRevealObserver() {
+      if (_aboutRevealObserver) _aboutRevealObserver.disconnect();
+
+      var reveals = document.querySelectorAll('.about-reveal');
+      if (!reveals.length) return;
+
+      var prefersReduced = typeof matchMedia !== 'undefined'
+        && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReduced || window.innerWidth <= 768) {
+        reveals.forEach(function(el) { el.classList.add('is-visible'); });
+        return;
+      }
+
+      var revealIndex = {};
+      reveals.forEach(function(el, index) {
+        revealIndex[el] = index;
+      });
+
+      _aboutRevealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var idx = revealIndex[entry.target];
+            if (typeof idx === 'number') {
+              entry.target.style.animationDelay = (idx * 0.12) + 's';
+            }
+            entry.target.classList.add('is-visible');
+            _aboutRevealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+      reveals.forEach(function(el) { _aboutRevealObserver.observe(el); });
+    }
+
+    function initAboutPhotoSwap() {
+      if (_aboutPhotoObserver) _aboutPhotoObserver.disconnect();
+
+      var frame = document.querySelector('.about-layout__frame');
+      var photos = frame ? frame.querySelectorAll('.about-layout__photo-img') : null;
+      var sections = document.querySelectorAll('[data-about-photo]');
+      if (!photos || !photos.length || !sections.length) return;
+
+      var prefersReduced = typeof matchMedia !== 'undefined'
+        && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      function setActivePhoto(index) {
+        photos.forEach(function(img, i) {
+          img.classList.toggle('is-active', i === index);
+        });
+      }
+
+      _aboutPhotoObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var idx = parseInt(entry.target.getAttribute('data-about-photo'), 10);
+            if (!isNaN(idx)) setActivePhoto(idx);
+          }
+        });
+      }, { threshold: 0.35, rootMargin: '-20% 0px -35% 0px' });
+
+      sections.forEach(function(section) { _aboutPhotoObserver.observe(section); });
+    }
+
+    function initImageLightbox() {
+      var lightbox = document.getElementById('cert-lightbox');
+      if (!lightbox) return;
+
+      var backdrop = lightbox.querySelector('.cert-lightbox__backdrop');
+      var closeBtn = lightbox.querySelector('.cert-lightbox__close');
+      var lightboxImg = lightbox.querySelector('.cert-lightbox__img');
+      if (!backdrop || !closeBtn || !lightboxImg) return;
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-open', 'cert-lightbox--wide');
+        lightbox.hidden = true;
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lightboxImg.removeAttribute('src');
+        lightboxImg.alt = '';
+      }
+
+      function openLightbox(fullSrc, alt, isWide) {
+        lightbox.classList.toggle('cert-lightbox--wide', !!isWide);
+        lightboxImg.src = fullSrc;
+        lightboxImg.alt = alt || 'Image preview';
+        lightbox.hidden = false;
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(function() {
+          lightbox.classList.add('is-open');
+        });
+      }
+
+      if (!_lightboxClickHandler) {
+        _lightboxClickHandler = function(e) {
+          var certThumb = e.target.closest('.cert-row__thumb[data-cert-full]');
+          var csZoom = e.target.closest('.cs-img-zoom[data-full]');
+          var trigger = certThumb || csZoom;
+          if (!trigger) return;
+          var fullSrc = trigger.getAttribute('data-cert-full') || trigger.getAttribute('data-full');
+          if (!fullSrc) return;
+          var img = trigger.querySelector('img');
+          openLightbox(fullSrc, img ? img.alt : '', !!csZoom);
+        };
+        document.addEventListener('click', _lightboxClickHandler);
+      }
+
+      if (!_lightboxInitialized) {
+        backdrop.addEventListener('click', closeLightbox);
+        closeBtn.addEventListener('click', closeLightbox);
+        if (_certLightboxKeyHandler) {
+          document.removeEventListener('keydown', _certLightboxKeyHandler);
+        }
+        _certLightboxKeyHandler = function(e) {
+          if (e.key === 'Escape' && !lightbox.hidden) closeLightbox();
+        };
+        document.addEventListener('keydown', _certLightboxKeyHandler);
+        _lightboxInitialized = true;
+      }
+    }
+
+    function initAboutCertLightbox() {
+      initImageLightbox();
+    }
+
+    function applyGallerySpread(gallery) {
+      var stage = gallery.querySelector('.about-photo-gallery__stage');
+      if (!stage || window.innerWidth <= 768) return;
+
+      var items = Array.prototype.slice.call(gallery.querySelectorAll('.about-photo-gallery__item'));
+      if (!items.length) return;
+
+      var tileW = 172;
+      var landscapeW = 218;
+      var stagePad = 12;
+      // ~42% overlap between neighbors — fanned deck like reference, all cards visible
+      var step = Math.round(tileW * 0.58);
+      var stageW = stage.offsetWidth;
+      var neededW = step * 4 + landscapeW;
+      var scale = Math.min(1, (stageW - stagePad * 2) / neededW);
+      var yOffsets = [10, -8, 12, -10, 8];
+      var rotations = [-3, 2, -1, 3, -2];
+
+      items.sort(function(a, b) {
+        return (parseFloat(a.getAttribute('data-x')) || 0) - (parseFloat(b.getAttribute('data-x')) || 0);
+      });
+
+      items.forEach(function(item, i) {
+        var slot = i - 2;
+        var x = slot * step * scale;
+        var y = (yOffsets[i] || 0) * scale;
+        item.style.setProperty('--x', x + 'px');
+        item.style.setProperty('--y', y + 'px');
+        item.style.setProperty('--order', String(i));
+        item.style.setProperty('--z', String(10 + i * 10));
+        if (item.dataset.rotSet !== '1') {
+          item.style.setProperty('--rot', rotations[i] + 'deg');
+          item.dataset.rotSet = '1';
+        }
+      });
+    }
+
+    function initAboutPhotoGallery() {
+      if (_aboutGalleryObserver) _aboutGalleryObserver.disconnect();
+      if (_aboutGallerySpreadTimer) {
+        clearTimeout(_aboutGallerySpreadTimer);
+        _aboutGallerySpreadTimer = null;
+      }
+      if (_aboutGalleryResizeHandler) {
+        window.removeEventListener('resize', _aboutGalleryResizeHandler);
+        _aboutGalleryResizeHandler = null;
+      }
+      if (_aboutGalleryResizeTimer) {
+        clearTimeout(_aboutGalleryResizeTimer);
+        _aboutGalleryResizeTimer = null;
+      }
+
+      var gallery = document.getElementById('about-photo-gallery');
+      if (!gallery) return;
+
+      var prefersReduced = typeof matchMedia !== 'undefined'
+        && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var isMobile = window.innerWidth <= 768;
+
+      function activateGallery() {
+        applyGallerySpread(gallery);
+        gallery.classList.add('is-visible', 'is-spread');
+      }
+
+      if (!isMobile) {
+        _aboutGalleryResizeHandler = function() {
+          clearTimeout(_aboutGalleryResizeTimer);
+          _aboutGalleryResizeTimer = setTimeout(function() {
+            var g = document.getElementById('about-photo-gallery');
+            if (g && window.innerWidth > 768) applyGallerySpread(g);
+          }, 150);
+        };
+        window.addEventListener('resize', _aboutGalleryResizeHandler);
+      }
+
+      if (prefersReduced || isMobile) {
+        activateGallery();
+        return;
+      }
+
+      gallery.classList.remove('is-visible', 'is-spread');
+
+      _aboutGalleryObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            setTimeout(activateGallery, 500);
+            _aboutGalleryObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25, rootMargin: '0px 0px -5% 0px' });
+
+      _aboutGalleryObserver.observe(gallery);
+    }
+
+    function initPrototypeVideos() {
+      document.querySelectorAll('.cs-phone-mockup__video').forEach(function(video) {
+        if (video.dataset.playInit) return;
+        video.dataset.playInit = '1';
+        var play = function() {
+          video.play().catch(function() {});
+        };
+        play();
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) play();
+              else video.pause();
+            });
+          }, { threshold: 0.35 });
+          observer.observe(video);
+        }
+      });
+    }
+
+    function onCaseStudyRendered() {
+      setHomeNavHeight();
+      requestAnimationFrame(function() {
+        initImageLightbox();
+        initPrototypeVideos();
+      });
+    }
+
+    function onAboutRendered() {
+      teardownAboutScroll();
+      setHomeNavHeight();
+      requestAnimationFrame(function() {
+        initAboutRevealObserver();
+        initAboutPhotoSwap();
+        initAboutCertLightbox();
+        initAboutPhotoGallery();
+        initAboutGalleryDotGrid();
+      });
+    }
+
+    function onWorkRendered() {
+      setHomeNavHeight();
+      var stack = document.querySelector('.work-stack');
+      var figures = document.querySelectorAll('.work-card-figure');
+      if (!stack || !figures.length) return;
+
+      clearTimeout(_workSwitchTimer);
+      _currentWorkCat = null;
+      figures.forEach(function(fig) {
+        fig.classList.remove('is-exiting', 'is-entering', 'is-visible');
+        fig.style.zIndex = '';
+        fig.style.animationDelay = '';
+      });
+      if (window._pendingWorkCat) {
+        var cat = window._pendingWorkCat;
+        window._pendingWorkCat = null;
+        setTimeout(function() {
+          switchWorkCat(cat);
+        }, 80);
+      } else {
+        applyWorkCat('ai', false);
+      }
     }
 
     // Store source category when a project card is clicked from the Work page
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function scrollToFooter() {
       // If not on a page that has a footer, go to about page first then scroll
       const footer = document.getElementById('site-footer');
@@ -2113,11 +3084,12 @@ function aidesignHTML() {
     }
 
     function openProject(page, sourceCat) {
-      window._lastWorkCat = sourceCat || 'featured';
+      window._lastWorkCat = sourceCat || 'accessibility';
       goTo(page);
     }
 
     window.addEventListener('hashchange', function() {
+      if (_transitionBusy) return;
       render(currentRoute());
     });
 
@@ -2206,7 +3178,7 @@ function aidesignHTML() {
       calmnest:  'CalmNest - Case Study - Aditi Deshpande',
       hydration: 'Hydration - Case Study - Aditi Deshpande',
       genai:     'GenAI - Case Study - Aditi Deshpande',
-      empowered: 'Empowered Vote - Case Study - Aditi Deshpande',
+      empowered: 'Empowered Essentials - Case Study - Aditi Deshpande',
       barriers:  'Barriers - Case Study - Aditi Deshpande',
       aidesign:  'AI Design - Case Study - Aditi Deshpande',
     };
@@ -2220,15 +3192,21 @@ function aidesignHTML() {
       document.title = PAGE_TITLES[page] || PAGE_TITLES.home;
       window.scrollTo(0, 0);
       document.body.scrollTop = 0;
+      if (page === 'home') {
+        onHomeRendered();
+      } else if (page === 'work') {
+        onWorkRendered();
+      } else if (page === 'about') {
+        onAboutRendered();
+      } else if (CS_PAGES.includes(page)) {
+        teardownAboutScroll();
+        onCaseStudyRendered();
+      } else {
+        teardownAboutScroll();
+        setHomeNavHeight();
+      }
     }
 
-    // ── Work category tabs
-    window.switchCat = function(cat, btn) {
-      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('cat-' + cat).classList.add('active');
-    };
 
     // ══════════════════════════════════════════
     //  CURSOR
@@ -2250,7 +3228,7 @@ function aidesignHTML() {
     (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; cring.style.left=rx+'px'; cring.style.top=ry+'px'; requestAnimationFrame(loop); })();
     document.addEventListener('mouseleave',()=>{ cdot.style.opacity='0'; cring.style.opacity='0'; });
 
-    const HOVER='.card,.resume-btn,.nav-link,.project-card,.cert-card,.cat-tab,.logo,.skill-group,.contact-card,.cs-next-card,.cs-other-card,.cs-back';
+    const HOVER='.card,.resume-btn,.nav-link,.project-card,.cert-card,.cat-tab,.logo,.skill-group,.contact-card,.cs-next-card,.cs-other-card,.cs-back,.cs-go-top';
 
     // Keep dot at a smaller size on hover (never hide it), expand ring
     function onHoverEnter() {
@@ -2275,7 +3253,7 @@ function aidesignHTML() {
       } else {
         // Default: ring always orange, dot is cream in dark mode / orange in light mode
         cring.style.borderColor = '#C4502A';
-        cdot.style.background = dark ? '#F0EDE6' : '#C4502A';
+        cdot.style.background = '#C4502A';
       }
     }
 
@@ -2287,7 +3265,7 @@ function aidesignHTML() {
       if (e.target.closest(HOVER)) onHoverLeave();
       // Reset color when leaving any element
       const isDark = document.body.classList.contains('dark');
-      cdot.style.background = isDark ? '#F0EDE6' : '#C4502A';
+      cdot.style.background = '#C4502A';
       cring.style.borderColor = '#C4502A';
     });
     } // end if(_wantsCursor)
@@ -2312,12 +3290,248 @@ function aidesignHTML() {
       localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
       // Refresh cursor color for current mode
       const isDark = document.body.classList.contains('dark');
-      cdot.style.background = isDark ? '#F0EDE6' : '#C4502A';
+      cdot.style.background = '#C4502A';
       cring.style.borderColor = '#C4502A';
     }
     // Expose callbacks referenced by inline onclick="..." handlers in the
     // generated HTML. (Module-mode declarations don't auto-attach to window.)
-    Object.assign(window, { goTo, openProject, goToWork, scrollToFooter, toggleTheme });
+    Object.assign(window, { goTo, openProject, goToWork, switchWorkCat, scrollToTop, scrollToFooter, toggleTheme });
+
+    // ── Page intro (home, once per session)
+    function prefersReducedMotion() {
+      return typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function fixAppVisibility() {
+      const app = document.getElementById('app');
+      if (!app) return;
+      app.style.opacity = '1';
+      app.style.visibility = 'visible';
+      app.style.transform = 'none';
+    }
+
+    function ensureHeroShellVisible(root) {
+      if (!root) return;
+      root.style.opacity = '1';
+      root.style.visibility = 'visible';
+      const hero = root.querySelector('.hero');
+      if (hero) {
+        hero.style.opacity = '1';
+        hero.style.visibility = 'visible';
+        hero.style.position = 'relative';
+        hero.style.zIndex = '2';
+        hero.style.transform = 'none';
+      }
+    }
+
+    function ensureHeadlineVisible(root) {
+      if (!root) return;
+      root.classList.add('hero-reveal-done');
+      root.querySelectorAll('.headline, .subtext, .hero-cta, .hero-btn').forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
+        if (el.classList.contains('hero-cta')) {
+          el.style.display = 'flex';
+        }
+      });
+    }
+
+    function startHeroEntrance() {
+      const root = document.querySelector('.home-root');
+      if (!root || prefersReducedMotion()) return;
+      root.classList.add('hero-entrance-active');
+    }
+
+    function ensureHeroVisible() {
+      fixAppVisibility();
+      const root = document.querySelector('.home-root');
+      if (!root) return;
+      root.classList.remove('hero-reveal-pending');
+      root.classList.remove('hero-reveal-active');
+      root.classList.add('hero-reveal-done');
+      ensureHeroShellVisible(root);
+      const skipAnimated = root.classList.contains('hero-entrance-active');
+      root.querySelectorAll(
+        '.headline, .subtext, .hero-cta, .hero-btn, .hero-btn-primary, .hero-btn-ghost, .accent'
+      ).forEach(function (el) {
+        if (skipAnimated && (el.classList.contains('headline') || el.classList.contains('subtext') || el.classList.contains('hero-cta'))) {
+          return;
+        }
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
+        if (el.classList.contains('hero-cta')) {
+          el.style.display = 'flex';
+        }
+      });
+    }
+
+    function initDotGridOverlay(container, overlay) {
+      if (!container || !overlay || overlay.dataset.initialized === '1') return;
+      overlay.dataset.initialized = '1';
+      if (prefersReducedMotion()) return;
+
+      let spotX = -999;
+      let spotY = -999;
+      let targetX = -999;
+      let targetY = -999;
+      let spotRaf = null;
+
+      function applySpotPosition() {
+        overlay.style.setProperty('--spot-x', spotX + 'px');
+        overlay.style.setProperty('--spot-y', spotY + 'px');
+      }
+
+      function tickSpotlight() {
+        const step = 1 - Math.pow(1 - 0.03, 2);
+        spotX += (targetX - spotX) * step;
+        spotY += (targetY - spotY) * step;
+        applySpotPosition();
+        if (overlay.classList.contains('is-active')) {
+          spotRaf = requestAnimationFrame(tickSpotlight);
+        } else {
+          spotRaf = null;
+        }
+      }
+
+      function startSpotlightLoop() {
+        if (!spotRaf) {
+          spotRaf = requestAnimationFrame(tickSpotlight);
+        }
+      }
+
+      function updateSpotlight(e) {
+        const rect = container.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        startSpotlightLoop();
+      }
+
+      function hideSpotlight() {
+        overlay.classList.remove('is-active');
+        targetX = -999;
+        targetY = -999;
+        spotX = -999;
+        spotY = -999;
+        applySpotPosition();
+        if (spotRaf) {
+          cancelAnimationFrame(spotRaf);
+          spotRaf = null;
+        }
+      }
+
+      container.addEventListener('mouseenter', function (e) {
+        overlay.classList.add('is-active');
+        updateSpotlight(e);
+      });
+      container.addEventListener('mousemove', updateSpotlight);
+      container.addEventListener('mouseleave', hideSpotlight);
+    }
+
+    function initHeroDotGrid() {
+      const heroBlock = document.querySelector('.home-root .home-hero-block');
+      const overlay = heroBlock && heroBlock.querySelector('.hero-grid-overlay');
+      initDotGridOverlay(heroBlock, overlay);
+    }
+
+    function initAboutGalleryDotGrid() {
+      const gallery = document.getElementById('about-photo-gallery');
+      const overlay = gallery && gallery.querySelector('.about-gallery-grid-overlay');
+      initDotGridOverlay(gallery, overlay);
+    }
+
+    function setHomeNavHeight() {
+      const nav = document.getElementById('nav');
+      if (!nav) return;
+      document.documentElement.style.setProperty('--home-nav-h', nav.offsetHeight + 'px');
+    }
+
+    function onHomeRendered() {
+      fixAppVisibility();
+      const root = document.querySelector('.home-root');
+      if (!root) return;
+      setHomeNavHeight();
+      initHeroDotGrid();
+      ensureHeroShellVisible(root);
+      if (prefersReducedMotion()) {
+        ensureHeadlineVisible(root);
+        return;
+      }
+      const introEl = document.getElementById('page-intro');
+      const introRunning = introEl && !introEl.hidden;
+      if (!introRunning && !root.classList.contains('hero-entrance-active')) {
+        requestAnimationFrame(function () {
+          root.classList.add('hero-entrance-active');
+        });
+      }
+      window.setTimeout(function () {
+        ensureHeadlineVisible(root);
+      }, 2600);
+    }
+
+    function finishPageIntro(intro) {
+      if (intro) intro.remove();
+      document.body.classList.remove('intro-active');
+      try { sessionStorage.setItem('introPlayed', '1'); } catch (e) {}
+      if (currentRoute() === 'home') {
+        onHomeRendered();
+      }
+    }
+
+    function initPageIntro() {
+      const intro = document.getElementById('page-intro');
+      if (!intro) return;
+      if (sessionStorage.getItem('introPlayed')) {
+        finishPageIntro(intro);
+        return;
+      }
+      if (currentRoute() !== 'home') {
+        finishPageIntro(intro);
+        return;
+      }
+      if (prefersReducedMotion()) {
+        finishPageIntro(intro);
+        return;
+      }
+
+      intro.hidden = false;
+      document.body.classList.add('intro-active');
+
+      const title = intro.querySelector('.page-intro__title');
+      const progressFill = intro.querySelector('.page-intro__progress-fill');
+      const wipe = intro.querySelector('.page-intro__wipe');
+
+      requestAnimationFrame(function () {
+        intro.classList.add('page-intro--zoom');
+      });
+
+      title.addEventListener('animationend', function onZoomEnd(e) {
+        if (e.animationName !== 'introZoom') return;
+        title.removeEventListener('animationend', onZoomEnd);
+        intro.classList.add('page-intro--progress');
+      });
+
+      progressFill.addEventListener('animationend', function onProgressEnd(e) {
+        if (e.animationName !== 'introProgressFill') return;
+        progressFill.removeEventListener('animationend', onProgressEnd);
+        intro.classList.add('page-intro--expand');
+      });
+
+      wipe.addEventListener('animationend', function onWipeEnd(e) {
+        if (e.animationName !== 'introWipeExpand') return;
+        wipe.removeEventListener('animationend', onWipeEnd);
+        intro.classList.add('page-intro--fadeOut');
+        startHeroEntrance();
+      });
+
+      intro.addEventListener('animationend', function onFadeOutEnd(e) {
+        if (e.animationName !== 'introFadeOut') return;
+        intro.removeEventListener('animationend', onFadeOutEnd);
+        finishPageIntro(intro);
+      });
+    }
 
     // ── Boot
+    initPageIntro();
     render(currentRoute());

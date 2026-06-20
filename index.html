@@ -39,7 +39,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500;1,700&family=Cormorant+Garamond:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 
   <link rel="preload" as="image" href="./assets/img/work/work-11b74571-1226.webp" imagesrcset="./assets/img/work/work-11b74571-800.webp 800w, ./assets/img/work/work-11b74571-1226.webp 1226w" imagesizes="(max-width: 768px) 100vw, 900px" fetchpriority="high" />
 
@@ -48,6 +49,8 @@
     :root { color-scheme: light dark; }
     html, body { background: #F0EDE6; color: #1a1a1a; font-family: 'DM Sans', system-ui, sans-serif; min-height: 100vh; margin: 0; }
     :root.dark, body.dark { background: #1a1a1a; color: #e2ded7; }
+    .page-intro { position: fixed; inset: 0; z-index: 10050; background: #ffffff; opacity: 1; }
+    body.intro-active { overflow: hidden; }
   </style>
 
   <link rel="stylesheet" href="./styles.css" />
@@ -58,11 +61,46 @@
     // body.dark CSS selectors (in styles.css) take effect immediately.
     if (document.documentElement.classList.contains('dark')) document.body.classList.add('dark');
   </script>
+  <div id="page-intro" class="page-intro" aria-hidden="true" hidden>
+    <div class="page-intro__content">
+      <h1 class="page-intro__title">Aditi Deshpande<span class="page-intro__title-dot">.</span></h1>
+      <div class="page-intro__progress-wrap" role="presentation">
+        <div class="page-intro__progress-track"></div>
+        <div class="page-intro__progress-fill"></div>
+        <div class="page-intro__wipe" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('introPlayed')) return;
+        if (window.location.hash && window.location.hash !== '#') return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var el = document.getElementById('page-intro');
+        if (el) {
+          el.hidden = false;
+          document.body.classList.add('intro-active');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <div id="page-transition" class="page-transition" hidden aria-hidden="true">
+    <div class="page-transition__panel"></div>
+  </div>
   <div class="c-dot" id="cdot"></div>
   <div class="c-ring" id="cring"></div>
   <div id="nav"></div>
   <div id="app"></div>
   <div class="toast" id="toast"></div>
+
+  <div class="cert-lightbox" id="cert-lightbox" hidden aria-hidden="true">
+    <button type="button" class="cert-lightbox__backdrop" aria-label="Close"></button>
+    <div class="cert-lightbox__panel">
+      <button type="button" class="cert-lightbox__close" aria-label="Close">&times;</button>
+      <img class="cert-lightbox__img" src="" alt="" />
+    </div>
+  </div>
 
   <script src="./bundle.js" defer></script>
 </body>

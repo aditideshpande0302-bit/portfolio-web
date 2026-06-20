@@ -1,42 +1,42 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackHTML, csGoToTopHTML, csZoomImgHTML, csPhoneMockupHTML } from '../shared.js';
 
 function rightwallHTML() {
   return `
+    <div class="home-root">
     <div class="cs-root cs-rw">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+
+      ${csBackHTML()}
 
       <!-- Hero -->
-      <div class="cs-hero">
-        <p class="cs-overline">Mobile App · Discovery · End-to-End UX</p>
-        <h1 class="cs-title">RightWall — Helping artists find the right exhibition</h1>
-        <p class="cs-subtitle">Designing a platform that helps emerging visual artists discover exhibitions that match their artistic style, reducing the guesswork and enabling them to quickly evaluate fit.</p>
-      </div>
-
-      <!-- Meta -->
-      <div class="cs-meta">
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Role</p>
-          <p class="cs-meta-value">Product Designer</p>
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Mobile App · Discovery · End-to-End UX</p>
+          <h1 class="cs-title">RightWall — Helping artists find the right exhibition</h1>
+          <p class="cs-subtitle">Designing a platform that helps emerging visual artists discover exhibitions that match their artistic style, reducing the guesswork and enabling them to quickly evaluate fit.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Role</p>
+              <p class="cs-meta-value">Product Designer</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Timeline</p>
+              <p class="cs-meta-value">8 Weeks</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Platform</p>
+              <p class="cs-meta-value">Mobile, Web</p>
+            </div>
+            <div class="cs-meta-item">
+              <p class="cs-meta-label">Tools</p>
+              <p class="cs-meta-value">Figma · FigJam · Maze</p>
+            </div>
+          </div>
         </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Timeline</p>
-          <p class="cs-meta-value">8 Weeks</p>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/rightwall-mockup.png" alt="RightWall app mockup" loading="lazy" decoding="async" />
+          </div>
         </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Platform</p>
-          <p class="cs-meta-value">Mobile, Web</p>
-        </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Tools</p>
-          <p class="cs-meta-value">Figma · FigJam · Maze</p>
-        </div>
-      </div>
-
-      <!-- Hero image -->
-      <div class="cs-hero-img">
-        <img src="/assets/img/work/work-11b74571-1226.webp" srcset="/assets/img/work/work-11b74571-800.webp 800w, /assets/img/work/work-11b74571-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall app — exhibition matching platform" width="1226" height="652" loading="lazy" decoding="async" />
       </div>
 
       <!-- Overview -->
@@ -72,10 +72,22 @@ function rightwallHTML() {
       <!-- Research -->
       <div class="cs-section">
         <p class="cs-section-label">Research</p>
-        <p class="cs-section-title">Understanding the artist's frustration</p>
-        <p class="cs-body">I conducted qualitative research with Philadelphia-based visual artists, starting with a screening survey followed by <strong>9 in-depth interviews</strong> to understand how they find, evaluate, and apply to exhibitions — including challenges before and after applying. I also reviewed existing platforms, grounding the problem in real behavior and identifying where uncertainty and misalignment occur.</p>
-
-        <div class="cs-img-wrap" style="margin-bottom:0;"><img src="/assets/img/case/rightwall/rightwall-b001ec12-1600.webp" srcset="/assets/img/case/rightwall/rightwall-b001ec12-800.webp 800w, /assets/img/case/rightwall/rightwall-b001ec12-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall affinity mapping — research synthesis" width="1600" height="870" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Understanding the artist's frustration</p>
+            <p class="cs-body">I conducted qualitative research with Philadelphia-based visual artists, starting with a screening survey followed by <strong>9 in-depth interviews</strong> to understand how they find, evaluate, and apply to exhibitions — including challenges before and after applying. I also reviewed existing platforms, grounding the problem in real behavior and identifying where uncertainty and misalignment occur.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: '/assets/img/case/rightwall/rightwall-b001ec12-1600.webp',
+              srcset: '/assets/img/case/rightwall/rightwall-b001ec12-800.webp 800w, /assets/img/case/rightwall/rightwall-b001ec12-1600.webp 1600w',
+              alt: 'RightWall affinity mapping — research synthesis',
+              width: 1600,
+              height: 870,
+              fullSrc: '/assets/img/case/rightwall/rightwall-b001ec12-1600.webp'
+            })}
+          </div>
+        </div>
 
         <div class="cs-quote">
           <p class="cs-quote-text">"There is a real disconnect between what I love to make, what people want to buy, and what galleries want to show."</p>
@@ -155,33 +167,50 @@ function rightwallHTML() {
         <p class="cs-section-title">From chaos to clarity</p>
         <p class="cs-body">The design focused on three core moments: onboarding that builds a style profile, a discovery feed that feels personal, and an application tracker that reduces cognitive load.</p>
 
-        <div class="cs-features">
-          <div class="cs-feature">
-            <span class="cs-feature-num">01</span>
-            <div>
-              <p class="cs-feature-title">Style profiling onboarding</p>
-              <p class="cs-feature-desc">Artists select visual style tiles instead of abstract categories, allowing the system to understand their work more accurately and personalize recommendations from the start.</p>
-            </div>
+        <div class="cs-feature-split cs-split">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">01</span>
+            <p class="cs-feature-title">Style profiling onboarding</p>
+            <p class="cs-feature-desc">Artists select visual style tiles instead of abstract categories, allowing the system to understand their work more accurately and personalize recommendations from the start.</p>
           </div>
-          <div class="cs-feature">
-            <span class="cs-feature-num">02</span>
-            <div>
-              <p class="cs-feature-title">Match score discovery feed</p>
-              <p class="cs-feature-desc">Exhibitions are ranked by match score and show key requirements, helping users quickly evaluate fit and make confident decisions.</p>
-            </div>
-          </div>
-          <div class="cs-feature">
-            <span class="cs-feature-num">03</span>
-            <div>
-              <p class="cs-feature-title">AI Coach</p>
-              <p class="cs-feature-desc">Provides personalized guidance on where to apply, what to improve, and how to approach opportunities — helping artists make more informed decisions without taking control away from them.</p>
-            </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: '/assets/img/case/rightwall/rightwall-prototype.mp4',
+              poster: '/assets/img/case/rightwall/rightwall-prototype-screen-800.webp',
+              alt: 'RightWall — style profiling onboarding prototype'
+            })}
           </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/rightwall/rightwall-e66ed4a2-1600.webp" srcset="/assets/img/case/rightwall/rightwall-e66ed4a2-800.webp 800w, /assets/img/case/rightwall/rightwall-e66ed4a2-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — style profiling onboarding screens" width="1600" height="851" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/rightwall/rightwall-c82f498a-1600.webp" srcset="/assets/img/case/rightwall/rightwall-c82f498a-800.webp 800w, /assets/img/case/rightwall/rightwall-c82f498a-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — discovery feed with match score cards" width="1600" height="851" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/rightwall/rightwall-577fa039-1600.webp" srcset="/assets/img/case/rightwall/rightwall-577fa039-800.webp 800w, /assets/img/case/rightwall/rightwall-577fa039-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — AI Coach feature screens" width="1600" height="851" loading="lazy" decoding="async" /></div>
+        <div class="cs-feature-split cs-split cs-split--reverse">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">02</span>
+            <p class="cs-feature-title">Match score discovery feed</p>
+            <p class="cs-feature-desc">Exhibitions are ranked by match score and show key requirements, helping users quickly evaluate fit and make confident decisions.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: '/assets/img/case/rightwall/rightwall-prototype-02.mp4',
+              poster: '/assets/img/case/rightwall/rightwall-prototype-02-screen-800.webp',
+              alt: 'RightWall — match score discovery feed prototype'
+            })}
+          </div>
+        </div>
+
+        <div class="cs-feature-split cs-split">
+          <div class="cs-split__text">
+            <span class="cs-feature-split__num">03</span>
+            <p class="cs-feature-title">AI Coach</p>
+            <p class="cs-feature-desc">Provides personalized guidance on where to apply, what to improve, and how to approach opportunities — helping artists make more informed decisions without taking control away from them.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csPhoneMockupHTML({
+              videoSrc: '/assets/img/case/rightwall/rightwall-prototype-03.mp4',
+              poster: '/assets/img/case/rightwall/rightwall-prototype-03-screen-800.webp',
+              alt: 'RightWall — AI Coach prototype'
+            })}
+          </div>
+        </div>
 
         <div class="cs-quote" style="margin-top:32px;">
           <p class="cs-quote-text">"Match score — not just a number, but a reason. Every card explains why it's a match."</p>
@@ -220,12 +249,24 @@ function rightwallHTML() {
           </tbody>
         </table>
 
-        <div class="cs-finding">
-          <p class="cs-finding-label">Key Finding</p>
-          <p class="cs-finding-text"><strong>Users didn't notice the AI Coach feature on the home screen.</strong> When participants were exploring the app, most of them skipped this feature because it blended in with other elements and didn't stand out.<br><br>Fix: I redesigned it as a prominent card on the home screen so users can easily see and access it.</p>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <div class="cs-finding">
+              <p class="cs-finding-label">Key Finding</p>
+              <p class="cs-finding-text"><strong>Users didn't notice the AI Coach feature on the home screen.</strong> When participants were exploring the app, most of them skipped this feature because it blended in with other elements and didn't stand out.<br><br>Fix: I redesigned it as a prominent card on the home screen so users can easily see and access it.</p>
+            </div>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: '/assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp',
+              srcset: '/assets/img/case/rightwall/rightwall-2ab5e8f8-800.webp 800w, /assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp 1600w',
+              alt: 'RightWall — before and after AI Coach redesign',
+              width: 1600,
+              height: 945,
+              fullSrc: '/assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp'
+            })}
+          </div>
         </div>
-
-        <div class="cs-img-wrap" style="margin-top:24px;margin-bottom:0;"><img src="/assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp" srcset="/assets/img/case/rightwall/rightwall-2ab5e8f8-800.webp 800w, /assets/img/case/rightwall/rightwall-2ab5e8f8-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="RightWall — before and after AI Coach redesign" width="1600" height="945" loading="lazy" decoding="async" /></div>
       </div>
 
       <!-- Reflections -->
@@ -258,9 +299,11 @@ function rightwallHTML() {
         </div>
       </div>
 
-      ${csNextHTML('pathway','Pathway — Accessible Transit for Color-Blind Commuters',['Research','Accessibility Design','WCAG Informed'])}
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default rightwallHTML;
