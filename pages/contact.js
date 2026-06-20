@@ -20,7 +20,7 @@ function contactHTML() {
           <p class="contact-card-title">Connect on LinkedIn</p>
           <p class="contact-card-desc">Find me on LinkedIn to view my full professional profile and experience.</p>
         </a>
-        <button class="contact-card" onclick="window.open('https://drive.google.com/file/d/1fPzEONrtjJCbjkJK1fO4UbxTC8Oh8dmU/view?usp=drive_link','_blank')">
+        <button class="contact-card" onclick="window.open('https://drive.google.com/file/d/1b2L7Vvn1s3prbUwVxh2D3iPAAW4lQM2m/view?usp=drive_link','_blank')">
           <span class="contact-card-icon">Resume</span>
           <p class="contact-card-label">Resume</p>
           <p class="contact-card-title">Download Resume</p>

@@ -1,26 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackToWorkHTML, csGoToTopHTML } from '../shared.js';
 
 function pathwayHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')">
-        <span class="cs-back-arrow">←</span> Back to Work
-      </button>
+    <div class="home-root">
+    <div class="cs-root cs-pathway">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Research · Accessibility Design · WCAG Informed</p>
-        <h1 class="cs-title">Pathway — Accessible transit for color-blind commuters</h1>
-        <p class="cs-subtitle">Physical transit maps rely on red–green color coding that's nearly invisible to color-blind commuters. Pathway is an app + smart glasses concept that highlights your route on physical station maps using patterns, not color.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Research · Accessibility Design · WCAG Informed</p>
+          <h1 class="cs-title">Pathway — Accessible transit for color-blind commuters</h1>
+          <p class="cs-subtitle">Physical transit maps rely on red–green color coding that's nearly invisible to color-blind commuters. Pathway is an app + smart glasses concept that highlights your route on physical station maps using patterns, not color.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">iOS + Smart Glasses</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="/assets/img/work/pathway-mockup-1600.webp" srcset="/assets/img/work/pathway-mockup-800.webp 800w, /assets/img/work/pathway-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway — accessible transit companion app mockup" width="1024" height="682" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">15 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">iOS + Smart Glasses</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma</p></div>
-      </div>
-
-      <div class="cs-hero-img"><img src="/assets/img/work/work-aecbbef3-1224.webp" srcset="/assets/img/work/work-aecbbef3-800.webp 800w, /assets/img/work/work-aecbbef3-1224.webp 1224w" sizes="(max-width: 768px) 100vw, 900px" alt="Pathway — accessible transit companion app" width="1224" height="650" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -170,9 +174,10 @@ function pathwayHTML() {
         </div>
       </div>
 
-      ${csNextHTML('pur','PUR Water Purifier — Ecommerce Redesign',['Ecommerce','Web','Responsive'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default pathwayHTML;

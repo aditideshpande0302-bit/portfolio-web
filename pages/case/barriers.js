@@ -1,24 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackToWorkHTML, csGoToTopHTML } from '../shared.js';
 
 function barriersHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-barriers">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Qualitative Research · Arts · User Interviews</p>
-        <h1 class="cs-title">Barriers in Exhibition Opportunities for Emerging Artists</h1>
-        <p class="cs-subtitle">A research study examining the fragmented landscape for emerging visual artists in Philadelphia — understanding why access to exhibition opportunities remains difficult, and what artists actually need to move forward.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Qualitative Research · Arts · User Interviews</p>
+          <h1 class="cs-title">Barriers in Exhibition Opportunities for Emerging Artists</h1>
+          <p class="cs-subtitle">A research study examining the fragmented landscape for emerging visual artists in Philadelphia — understanding why access to exhibition opportunities remains difficult, and what artists actually need to move forward.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Domain</p><p class="cs-meta-value">Emerging Visual Artists</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Location</p><p class="cs-meta-value">Philadelphia, PA</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Methods</p><p class="cs-meta-value">Interviews · Secondary Research</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Participants</p><p class="cs-meta-value">9 Artists · 2 Stakeholders</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="/assets/img/work/work-270c3aa2-1500.webp" srcset="/assets/img/work/work-270c3aa2-800.webp 800w, /assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities — gallery visitor" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Domain</p><p class="cs-meta-value">Emerging Visual Artists</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Location</p><p class="cs-meta-value">Philadelphia, PA</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Methods</p><p class="cs-meta-value">Interviews · Secondary Research</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Participants</p><p class="cs-meta-value">9 Artists · 2 Stakeholders</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="/assets/img/work/work-270c3aa2-1500.webp" srcset="/assets/img/work/work-270c3aa2-800.webp 800w, /assets/img/work/work-270c3aa2-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="Barriers in Exhibition Opportunities — gallery visitor" width="1500" height="1000" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">01 — Problem Space</p>
@@ -149,7 +155,55 @@ function barriersHTML() {
         <p class="cs-section-label">07 — Competitive Analysis</p>
         <p class="cs-section-title">What exists today isn't enough</p>
         <p class="cs-body">Existing platforms help artists stay aware, but don't help them act with confidence. None of them bridge the gap between creating art and getting it shown. Platforms like CaFÉ, Art Jobs, and ZAPP provide listings but lack style matching, curator transparency, and meaningful feedback systems — all things artists said they need most.</p>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/barriers/barriers-afb6543c-1167.webp" srcset="/assets/img/case/barriers/barriers-afb6543c-800.webp 800w, /assets/img/case/barriers/barriers-afb6543c-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Competitive analysis — RightWall vs CaFÉ vs Art Jobs vs ZAPP" width="1167" height="665" loading="lazy" decoding="async" /></div>
+
+        <div class="cs-compare-wrap">
+          <table class="cs-compare-table">
+            <thead>
+              <tr>
+                <th scope="col">Features</th>
+                <th scope="col" class="cs-compare-table__highlight">RightWall</th>
+                <th scope="col">CaFÉ</th>
+                <th scope="col">Art Jobs</th>
+                <th scope="col">ZAPP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Curator &amp; Show Profile Transparency</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+              <tr>
+                <td>Style matching feature</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+              <tr>
+                <td>Verified exhibition calls</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--partial" aria-label="Partially available"></span></td>
+              </tr>
+              <tr>
+                <td>Application feedback system</td>
+                <td class="cs-compare-table__highlight"><span class="cs-compare-status cs-compare-status--yes" aria-label="Available">✓</span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+                <td><span class="cs-compare-status cs-compare-status--no" aria-label="Not available"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cs-compare-legend">
+            <span><span class="cs-compare-status cs-compare-status--yes" aria-hidden="true">✓</span> Available</span>
+            <span><span class="cs-compare-status cs-compare-status--partial" aria-hidden="true"></span> Partially Available</span>
+            <span><span class="cs-compare-status cs-compare-status--no" aria-hidden="true"></span> Not Available</span>
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
@@ -186,9 +240,10 @@ function barriersHTML() {
         <p class="cs-body">This research directly shaped the design of RightWall — a platform built to surface style fit, reduce guesswork, and give emerging artists the confidence to apply to the right exhibitions.</p>
       </div>
 
-      ${csNextHTML('aidesign','AI Design Tool Comparison',['AI','Comparison','Tools'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default barriersHTML;

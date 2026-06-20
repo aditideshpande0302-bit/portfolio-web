@@ -1,24 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackToWorkHTML, csGoToTopHTML } from '../shared.js';
 
 function genaiHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-genai">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Generative AI · User Research · Education</p>
-        <h1 class="cs-title">Gen AI Study Buddy — Understanding how students trust AI</h1>
-        <p class="cs-subtitle">As AI tools increasingly influence how students study, this project examined how GenAI can support learning without replacing human understanding — making AI-driven study experiences more adaptive, personalized, and trustworthy.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Generative AI · User Research · Education</p>
+          <h1 class="cs-title">Gen AI Study Buddy — Understanding how students trust AI</h1>
+          <p class="cs-subtitle">As AI tools increasingly influence how students study, this project examined how GenAI can support learning without replacing human understanding — making AI-driven study experiences more adaptive, personalized, and trustworthy.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UX Researcher</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Year</p><p class="cs-meta-value">2024</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeframe</p><p class="cs-meta-value">14 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Type</p><p class="cs-meta-value">Research · AI Education</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="/assets/img/work/work-5058dc6c-1600.webp" srcset="/assets/img/work/work-5058dc6c-800.webp 800w, /assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — cover" width="1600" height="1200" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UX Researcher</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Year</p><p class="cs-meta-value">2024</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeframe</p><p class="cs-meta-value">14 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Type</p><p class="cs-meta-value">Research · AI Education</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="/assets/img/work/work-5058dc6c-1600.webp" srcset="/assets/img/work/work-5058dc6c-800.webp 800w, /assets/img/work/work-5058dc6c-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — cover" width="1600" height="1200" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Problem</p>
@@ -52,7 +58,7 @@ function genaiHTML() {
             <p class="cs-pain-desc">Research focused on management students at Thomas Jefferson University — tech-savvy, academically engaged, and frequently exposed to digital study platforms.</p>
           </div>
         </div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/genai/genai-3a60a5f7-1167.webp" srcset="/assets/img/case/genai/genai-3a60a5f7-800.webp 800w, /assets/img/case/genai/genai-3a60a5f7-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Users, Goals, Environments Venn diagram" width="1167" height="826" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--md" style="margin-bottom:32px;"><img src="/assets/img/case/genai/genai-3a60a5f7-1167.webp" srcset="/assets/img/case/genai/genai-3a60a5f7-800.webp 800w, /assets/img/case/genai/genai-3a60a5f7-1167.webp 1167w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Users, Goals, Environments Venn diagram" width="1167" height="826" loading="lazy" decoding="async" /></div>
       </div>
 
       <div class="cs-section">
@@ -81,7 +87,7 @@ function genaiHTML() {
             <p class="cs-pain-desc">Deeper insights yet to be uncovered — requiring open-ended exploration rather than hypothesis testing.</p>
           </div>
         </div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/genai/genai-f8e15bd7-1382.webp" srcset="/assets/img/case/genai/genai-f8e15bd7-800.webp 800w, /assets/img/case/genai/genai-f8e15bd7-1382.webp 1382w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Known/Unknown secondary research synthesis framework" width="1382" height="1155" loading="lazy" decoding="async" /></div>
+<div class="cs-img-wrap cs-img-wrap--md" style="margin-bottom:32px;"><img src="/assets/img/case/genai/genai-f8e15bd7-1382.webp" srcset="/assets/img/case/genai/genai-f8e15bd7-800.webp 800w, /assets/img/case/genai/genai-f8e15bd7-1382.webp 1382w" sizes="(max-width: 768px) 100vw, 900px" alt="Gen AI Study Buddy — Known/Unknown secondary research synthesis framework" width="1382" height="1155" loading="lazy" decoding="async" /></div>
       </div>
 
       <div class="cs-section">
@@ -172,9 +178,10 @@ function genaiHTML() {
         </div>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default genaiHTML;

@@ -1,24 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackToWorkHTML, csGoToTopHTML, csZoomImgHTML } from '../shared.js';
 
 function calmnestHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-calmnest">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Wellness · Mobile App · Habit Design</p>
-        <h1 class="cs-title">CalmNest — Building a consistent meditation habit</h1>
-        <p class="cs-subtitle">A meditation app designed to help individuals find peace, reduce stress, and establish a lasting daily meditation practice — built on habit-forming psychology and iterative usability testing.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Wellness · Mobile App · Habit Design</p>
+          <h1 class="cs-title">CalmNest — Building a consistent meditation habit</h1>
+          <p class="cs-subtitle">A meditation app designed to help individuals find peace, reduce stress, and establish a lasting daily meditation practice — built on habit-forming psychology and iterative usability testing.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">8 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Mobile</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · Miro · FigJam</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="/assets/img/work/calmnest-mockup-1600.webp" srcset="/assets/img/work/calmnest-mockup-800.webp 800w, /assets/img/work/calmnest-mockup-1600.webp 1024w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest meditation app mockup" width="1024" height="768" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">8 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Mobile</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · Miro · FigJam</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="/assets/img/work/work-ed343775-1419.webp" srcset="/assets/img/work/work-ed343775-800.webp 800w, /assets/img/work/work-ed343775-1419.webp 1419w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest meditation app — cover" width="1419" height="896" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">Overview</p>
@@ -65,30 +71,77 @@ function calmnestHTML() {
 
       <div class="cs-section">
         <p class="cs-section-label">Scoping</p>
-        <p class="cs-section-title">MoSCoW — prioritizing features</p>
-        <p class="cs-body">I applied the MoSCoW method to organize features into Must-Have, Should-Have, Could-Have, and Won't-Have categories. This prioritization kept the core experience focused while leaving room for future enhancements.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/calmnest/calmnest-991aaa8e-1436.webp" srcset="/assets/img/case/calmnest/calmnest-991aaa8e-800.webp 800w, /assets/img/case/calmnest/calmnest-991aaa8e-1436.webp 1436w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest MoSCoW feature prioritization" width="1436" height="750" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">MoSCoW — prioritizing features</p>
+            <p class="cs-body">I applied the MoSCoW method to organize features into Must-Have, Should-Have, Could-Have, and Won't-Have categories. This prioritization kept the core experience focused while leaving room for future enhancements.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: '/assets/img/case/calmnest/calmnest-991aaa8e-1436.webp',
+              srcset: '/assets/img/case/calmnest/calmnest-991aaa8e-800.webp 800w, /assets/img/case/calmnest/calmnest-991aaa8e-1436.webp 1436w',
+              alt: 'CalmNest MoSCoW feature prioritization',
+              width: 1436,
+              height: 750,
+              fullSrc: '/assets/img/case/calmnest/calmnest-991aaa8e-1436.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Strategy</p>
-        <p class="cs-section-title">Storyboard — mapping the user journey</p>
-        <p class="cs-body">I began by creating a storyboard that visualizes the complete user journey — the trigger that prompts app use, the actions users take, and the rewards and investments that encourage them to return. Each frame ensured every step aligned with the habit-forming framework.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/calmnest/calmnest-c174835c-577.webp" srcset="/assets/img/case/calmnest/calmnest-c174835c-577.webp 577w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest storyboard — habit forming user journey" width="577" height="690" loading="lazy" decoding="async" /></div>
+        <div class="cs-split">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Storyboard — mapping the user journey</p>
+            <p class="cs-body">I began by creating a storyboard that visualizes the complete user journey — the trigger that prompts app use, the actions users take, and the rewards and investments that encourage them to return. Each frame ensured every step aligned with the habit-forming framework.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: '/assets/img/case/calmnest/calmnest-c174835c-577.webp',
+              srcset: '/assets/img/case/calmnest/calmnest-c174835c-577.webp 577w',
+              alt: 'CalmNest storyboard — habit forming user journey',
+              width: 577,
+              height: 690,
+              fullSrc: '/assets/img/case/calmnest/calmnest-c174835c-577.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Structure</p>
         <p class="cs-section-title">User Flow — mapping key paths</p>
         <p class="cs-body">I designed user flows to outline the paths users would take to complete key tasks — onboarding, starting a session, and tracking progress. These flows ensured efficient, barrier-free navigation throughout the app.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/calmnest/calmnest-0787f7e0-1165.webp" srcset="/assets/img/case/calmnest/calmnest-0787f7e0-800.webp 800w, /assets/img/case/calmnest/calmnest-0787f7e0-1165.webp 1165w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest user flow diagram" width="1165" height="750" loading="lazy" decoding="async" /></div>
+        ${csZoomImgHTML({
+          src: '/assets/img/case/calmnest/calmnest-0787f7e0-1165.webp',
+          srcset: '/assets/img/case/calmnest/calmnest-0787f7e0-800.webp 800w, /assets/img/case/calmnest/calmnest-0787f7e0-1165.webp 1165w',
+          alt: 'CalmNest user flow diagram',
+          width: 1165,
+          height: 750,
+          fullSrc: '/assets/img/case/calmnest/calmnest-0787f7e0-1165.webp',
+          wrapClass: 'cs-img-wrap--md'
+        })}
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Skeleton</p>
-        <p class="cs-section-title">Moodboard and style guide</p>
-        <p class="cs-body">The CalmNest moodboard was designed to reflect a serene, calming atmosphere with soft pastels, minimalist elements, and smooth gradients — evoking feelings of peace and relaxation. The style guide established calming color tones, clean modern typography, and simple intuitive icons, ensuring a cohesive and tranquil experience throughout.</p>
-        <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/calmnest/calmnest-53d0be08-1600.webp" srcset="/assets/img/case/calmnest/calmnest-53d0be08-800.webp 800w, /assets/img/case/calmnest/calmnest-53d0be08-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest moodboard and color palette" width="1600" height="813" loading="lazy" decoding="async" /></div>
+        <div class="cs-split cs-split--reverse">
+          <div class="cs-split__text">
+            <p class="cs-section-title">Moodboard and style guide</p>
+            <p class="cs-body">The CalmNest moodboard was designed to reflect a serene, calming atmosphere with soft pastels, minimalist elements, and smooth gradients — evoking feelings of peace and relaxation. The style guide established calming color tones, clean modern typography, and simple intuitive icons, ensuring a cohesive and tranquil experience throughout.</p>
+          </div>
+          <div class="cs-split__media">
+            ${csZoomImgHTML({
+              src: '/assets/img/case/calmnest/calmnest-53d0be08-1600.webp',
+              srcset: '/assets/img/case/calmnest/calmnest-53d0be08-800.webp 800w, /assets/img/case/calmnest/calmnest-53d0be08-1600.webp 1600w',
+              alt: 'CalmNest moodboard and color palette',
+              width: 1600,
+              height: 813,
+              fullSrc: '/assets/img/case/calmnest/calmnest-53d0be08-1600.webp'
+            })}
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
@@ -143,9 +196,10 @@ function calmnestHTML() {
 <div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/calmnest/calmnest-11d12175-1600.webp" srcset="/assets/img/case/calmnest/calmnest-11d12175-800.webp 800w, /assets/img/case/calmnest/calmnest-11d12175-1600.webp 1600w" sizes="(max-width: 768px) 100vw, 900px" alt="CalmNest SCAMPER iterations — before and after improvements" width="1600" height="697" loading="lazy" decoding="async" /></div>
       </div>
 
-      ${csNextHTML('hydration','Hydration App — Daily Intake Tracker',['Health','Mobile','Habit Design'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default calmnestHTML;

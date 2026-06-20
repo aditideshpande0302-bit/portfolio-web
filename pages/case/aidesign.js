@@ -1,24 +1,30 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackToWorkHTML, csGoToTopHTML } from '../shared.js';
 
 function aidesignHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-aidesign">
 
-      <div class="cs-hero">
-        <p class="cs-overline">AI · Comparison · Tools</p>
-        <h1 class="cs-title">Can AI tools handle identity-driven products? A RightWall stress test.</h1>
-        <p class="cs-subtitle">Five AI tools. Three screens. One identity-driven product. An evaluation of how well current AI design tools handle aesthetic specificity when given only text prompts.</p>
+      ${csBackToWorkHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">AI · Comparison · Tools</p>
+          <h1 class="cs-title">Can AI tools handle identity-driven products? A RightWall stress test.</h1>
+          <p class="cs-subtitle">Five AI tools. Three screens. One identity-driven product. An evaluation of how well current AI design tools handle aesthetic specificity when given only text prompts.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">1–2 Weeks</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools Tested</p><p class="cs-meta-value">5 AI tools</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Screens</p><p class="cs-meta-value">3 screens</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Input</p><p class="cs-meta-value">Text prompts only</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="/assets/img/work/work-5c6230c9-1500.webp" srcset="/assets/img/work/work-5c6230c9-800.webp 800w, /assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison — cover" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Duration</p><p class="cs-meta-value">1–2 Weeks</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools Tested</p><p class="cs-meta-value">5 AI tools</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Screens</p><p class="cs-meta-value">3 screens</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Input</p><p class="cs-meta-value">Text prompts only</p></div>
-      </div>
-
-      <div class="cs-hero-img" style="margin-bottom:56px;"><img src="/assets/img/work/work-5c6230c9-1500.webp" srcset="/assets/img/work/work-5c6230c9-800.webp 800w, /assets/img/work/work-5c6230c9-1500.webp 1500w" sizes="(max-width: 768px) 100vw, 900px" alt="AI Design Tool Comparison — cover" width="1500" height="1000" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
         <p class="cs-section-label">01 — The Product</p>
@@ -241,9 +247,10 @@ function aidesignHTML() {
         </div>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      ${csGoToTopHTML()}
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default aidesignHTML;

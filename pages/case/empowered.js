@@ -1,142 +1,172 @@
-import { csNextHTML, footerHTML } from '../shared.js';
+import { homeFooterHTML, csBackHTML, csGoToTopHTML, csMacbookMockupHTML } from '../shared.js';
 
 function empoweredHTML() {
   return `
-    <div class="cs-root">
-      <button class="cs-back" onclick="goToWork('auto')"><span class="cs-back-arrow">←</span> Back to Work</button>
+    <div class="home-root">
+    <div class="cs-root cs-ev">
 
-      <div class="cs-hero">
-        <p class="cs-overline">Civic Tech · UI/UX Design · Product Redesign</p>
-        <h1 class="cs-title">Empowered Vote — Redesigning civic discovery for first-time voters</h1>
-        <p class="cs-subtitle">How I reimagined the onboarding and browsing experience at Empowered Vote — a civic-tech platform — to reduce overwhelm and make political information feel approachable.</p>
+      ${csBackHTML()}
+
+      <div class="cs-rw-hero">
+        <div class="cs-rw-hero__content">
+          <p class="cs-overline">Civic Tech · Web · Product Design</p>
+          <h1 class="cs-title">Empowered Essentials — Helping citizens find and understand their representatives</h1>
+          <p class="cs-subtitle">Non-partisan tools to see who represents you from city council to federal level — no login, no partisan framing.</p>
+          <div class="cs-meta cs-rw-hero__meta">
+            <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">Jan 2026 – Present</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Web (mobile-first)</p></div>
+            <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · FigJam · Maze</p></div>
+          </div>
+        </div>
+        <div class="cs-rw-hero__visual">
+          <div class="cs-hero-img">
+            <img src="./assets/img/featured/empoweredvault-mockup.png" alt="Empowered Essentials app mockup" loading="lazy" decoding="async" />
+          </div>
+        </div>
       </div>
-
-      <div class="cs-meta">
-        <div class="cs-meta-item"><p class="cs-meta-label">Role</p><p class="cs-meta-value">UI/UX Designer</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Timeline</p><p class="cs-meta-value">Ongoing</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Platform</p><p class="cs-meta-value">Empowered Vote</p></div>
-        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">Figma · FigJam</p></div>
-      </div>
-
-<div class="cs-hero-img" style="margin-bottom:56px;"><img src="/assets/img/work/work-972f2aa7-1226.webp" srcset="/assets/img/work/work-972f2aa7-800.webp 800w, /assets/img/work/work-972f2aa7-1226.webp 1226w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — civic engagement platform redesign hero" width="1226" height="648" loading="lazy" decoding="async" /></div>
 
       <div class="cs-section">
-        <p class="cs-section-label">The Problem</p>
-        <p class="cs-section-title">Civic information is hard to navigate</p>
-        <p class="cs-body">First-time users arriving at Empowered Vote were immediately confronted with dense lists, unclear filtering, and no clear entry point. The platform had powerful data — but no onboarding to ease new users into it. People were leaving before finding their own representatives.</p>
-
-        <div class="cs-quote">
-          <p class="cs-quote-text">"I didn't know where to start. There were so many names and I didn't know who represented me."</p>
-          <p class="cs-quote-attr">First-time voter — usability session</p>
+        <p class="cs-section-label">Overview</p>
+        <div class="cs-two-col">
+          <div>
+            <p class="cs-section-title">The Problem</p>
+            <p class="cs-body">Most people don't know who represents them. Civic information is scattered across government sites and news — often written for an informed audience or filtered through partisan lenses.</p>
+          </div>
+          <div>
+            <p class="cs-section-title">The Solution</p>
+            <p class="cs-body">Empowered Essentials is the platform entry point: enter a ZIP code and instantly see every representative — from city council to federal — with voting records, funding sources, and policy positions. No login required.</p>
+          </div>
         </div>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/empowered/empowered-a21cba44-924.webp" srcset="/assets/img/case/empowered/empowered-a21cba44-800.webp 800w, /assets/img/case/empowered/empowered-a21cba44-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — original design before redesign" width="924" height="648" loading="lazy" decoding="async" /></div>
+        <div class="cs-pain-grid" style="margin-top:32px;">
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 01</p>
+            <p class="cs-pain-title">No login required</p>
+            <p class="cs-pain-desc">Deliver value to anonymous users immediately — authentication only for deeper actions like messaging or saving.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 02</p>
+            <p class="cs-pain-title">Data completeness</p>
+            <p class="cs-pain-desc">Many profiles had incomplete policy data — the design had to work with partial information, not assume full coverage.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 03</p>
+            <p class="cs-pain-title">Near-instant lookup</p>
+            <p class="cs-pain-desc">ZIP code search needed to feel immediate, with profile pages loading progressively rather than all at once.</p>
+          </div>
+          <div class="cs-pain-card">
+            <p class="cs-pain-num">Constraint 04</p>
+            <p class="cs-pain-title">State-to-state variation</p>
+            <p class="cs-pain-desc">Different states have different elected offices — structure and UI needed to flex by location.</p>
+          </div>
+        </div>
       </div>
 
       <div class="cs-section">
         <p class="cs-section-label">Research</p>
-        <p class="cs-section-title">What we learned from users</p>
-        <p class="cs-body">Through user interviews and usability sessions with first-time voters, four recurring pain points emerged.</p>
+        <p class="cs-section-title">What stops people from engaging</p>
+        <p class="cs-body">Before designing screens, the team focused on trust and time — the two barriers that matter most for a busy user who wants to vote responsibly without wading through biased sources.</p>
 
         <div class="cs-pain-grid">
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 01</p>
-            <p class="cs-pain-title">No clear starting point</p>
-            <p class="cs-pain-desc">Users didn't know where to begin. The homepage lacked a clear call to action or orientation step.</p>
+            <p class="cs-pain-num">Finding 01</p>
+            <p class="cs-pain-title">Trust is the biggest barrier</p>
+            <p class="cs-pain-desc">Users assumed civic information would be biased and disengaged rather than try to verify it.</p>
           </div>
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 02</p>
-            <p class="cs-pain-title">Filter overload</p>
-            <p class="cs-pain-desc">The sidebar presented too many filters upfront, creating decision paralysis before users had explored anything.</p>
+            <p class="cs-pain-num">Finding 02</p>
+            <p class="cs-pain-title">Time is the second barrier</p>
+            <p class="cs-pain-desc">People would engage only if useful information appeared in seconds, not minutes.</p>
           </div>
           <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 03</p>
-            <p class="cs-pain-title">Trust gap</p>
-            <p class="cs-pain-desc">Candidate listings felt like raw data dumps. Users wanted context and a human summary before engaging further.</p>
+            <p class="cs-pain-num">Finding 03</p>
+            <p class="cs-pain-title">Local reps are least understood</p>
+            <p class="cs-pain-desc">Awareness dropped sharply for local offices — most users could name a senator but not a city council member.</p>
           </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Pain Point 04</p>
-            <p class="cs-pain-title">Visual hierarchy missing</p>
-            <p class="cs-pain-desc">Federal, state, and local roles were displayed with equal visual weight, making it hard to orient by relevance.</p>
-          </div>
-        </div>
-
-      </div>
-
-
-
-      <div class="cs-section">
-        <p class="cs-section-label">Key Design Changes</p>
-        <p class="cs-section-title">From cluttered to clear</p>
-        <p class="cs-body">I restructured the experience around a simple entry point: find your representatives first, then explore from a position of familiarity. Three changes had the most impact.</p>
-
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 01</p>
-          <p class="cs-decision-title">A dedicated entry point instead of a filter panel</p>
-          <p class="cs-decision-desc">Before, users landed on a dense filter panel with an undifferentiated candidate list. After, they land on a dedicated "Find Your Representatives" step with a simple address input — a clear, focused action.</p>
-        </div>
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 02</p>
-          <p class="cs-decision-title">Clear government-level hierarchy</p>
-          <p class="cs-decision-desc">Before, all government levels were displayed with equal visual weight and no grouping logic. After, a clear hierarchy — Local → State → Federal — organises representatives into collapsible sections the user can navigate with context.</p>
-        </div>
-        <div class="cs-decision">
-          <p class="cs-decision-num">Change 03</p>
-          <p class="cs-decision-title">Human summary before data</p>
-          <p class="cs-decision-desc">Before, the profile page immediately led with policy data and tag clouds. After, it opens with a plain-language summary of the representative, then surfaces issue tags and comparative views — reducing cognitive load at the most critical moment.</p>
         </div>
       </div>
 
       <div class="cs-section">
-        <p class="cs-section-label">Final Designs</p>
-        <p class="cs-section-title">The redesigned experience</p>
-        <p class="cs-body">The final screens cover three key moments in the user journey: landing and discovery, the representatives browse view, and the representative profile page.</p>
+        <p class="cs-section-label">Design</p>
+        <p class="cs-section-title">Speed, clarity, and neutrality</p>
 
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/empowered/empowered-acd48b2f-924.webp" srcset="/assets/img/case/empowered/empowered-acd48b2f-800.webp 800w, /assets/img/case/empowered/empowered-acd48b2f-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 1: Landing and Find Your Representatives" width="924" height="648" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/empowered/empowered-fd673c46-924.webp" srcset="/assets/img/case/empowered/empowered-fd673c46-800.webp 800w, /assets/img/case/empowered/empowered-fd673c46-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 2: Browse representatives by government level" width="924" height="814" loading="lazy" decoding="async" /></div>
-<div class="cs-img-wrap" style="margin-bottom:32px;"><img src="/assets/img/case/empowered/empowered-84e5b99b-924.webp" srcset="/assets/img/case/empowered/empowered-84e5b99b-800.webp 800w, /assets/img/case/empowered/empowered-84e5b99b-924.webp 924w" sizes="(max-width: 768px) 100vw, 900px" alt="Empowered Vote — Screen 3: Representative profile page" width="924" height="1074" loading="lazy" decoding="async" /></div>
-      </div>
+        <div class="cs-split cs-split--reverse cs-ev-design">
+          <div class="cs-split__text">
+            <div class="cs-decision">
+              <p class="cs-decision-num">01</p>
+              <p class="cs-decision-title">Design for responsible voting, faster</p>
+              <p class="cs-decision-desc">Every decision was filtered through one question: does this help our user vote responsibly faster, or slow her down?</p>
+            </div>
 
-      <div class="cs-section">
-        <p class="cs-section-label">Visual Direction</p>
-        <p class="cs-section-title">Approachable, not sterile</p>
-        <p class="cs-body">The original design used a muted palette that felt unfinished. The redesign shifts to a clean teal-and-white system — trustworthy and civic without being stiff. Typography and spacing were opened up to reduce cognitive load per page.</p>
+            <div class="cs-decision">
+              <p class="cs-decision-num">02</p>
+              <p class="cs-decision-title">Progressive disclosure on profiles</p>
+              <p class="cs-decision-desc">Surface three essentials immediately — who they are, what they stand for, how to reach them — and move everything else one tap deeper.</p>
+            </div>
 
-        <div class="cs-pain-grid">
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 01</p>
-            <p class="cs-pain-title">Teal and white system</p>
-            <p class="cs-pain-desc">A clean, trustworthy color palette that feels civic without being government-stiff.</p>
+            <div class="cs-decision">
+              <p class="cs-decision-num">03</p>
+              <p class="cs-decision-title">A visual trust layer</p>
+              <p class="cs-decision-desc">No party color-coding, no loaded language — a calm, consistent tone applied equally across every profile. Compass integration includes thoughtful empty states when stance data is missing.</p>
+            </div>
           </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 02</p>
-            <p class="cs-pain-title">Generous whitespace</p>
-            <p class="cs-pain-desc">Spacing was opened up across all views to reduce the visual density that was causing overwhelm.</p>
-          </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 03</p>
-            <p class="cs-pain-title">Card-based grouping</p>
-            <p class="cs-pain-desc">Representatives are grouped into cards with consistent structure, making scanning and comparison faster.</p>
-          </div>
-          <div class="cs-pain-card">
-            <p class="cs-pain-num">Direction 04</p>
-            <p class="cs-pain-title">Collapsible sections</p>
-            <p class="cs-pain-desc">Government levels are collapsible, letting users control the complexity they engage with at any moment.</p>
+          <div class="cs-split__media">
+            ${csMacbookMockupHTML({
+              videoSrc: '/assets/img/case/empowered/empowered-prototype.mp4',
+              poster: '/assets/img/case/empowered/empowered-prototype-screen-800.webp',
+              alt: 'Empowered Essentials — web prototype demo'
+            })}
           </div>
         </div>
-
       </div>
 
       <div class="cs-section">
-        <p class="cs-section-label">Outcome</p>
-        <p class="cs-section-title">Results and reflection</p>
-        <p class="cs-body">The redesign reduced the first-time user path from a confusing multi-panel experience to a single focused entry point. Structured hierarchy across government levels made browsing significantly more intuitive. Replacing data-first profiles with human summaries lowered the cognitive barrier at the most critical decision moment.</p>
-        <p class="cs-body">If I were to continue this work, I'd focus on mobile-first refinements, localization for non-English speakers, and deeper exploration of the candidate comparison flow.</p>
+        <p class="cs-section-label">Collaboration</p>
+        <p class="cs-section-title">Built with engineering from day one</p>
+        <p class="cs-body">Before designing profiles, engineering built a Data Explorer listing every backend field — I used it to decide what to surface instead of designing around assumptions. I stayed involved through QA, catching issues like an FAQ expand button that scrolled users back to the top. I also built the Compass Graph as a reusable design-system component for the wider team.</p>
       </div>
 
-      ${csNextHTML('rightwall','RightWall — Exhibition Matching Platform',['Mobile App','Discovery','End-to-End UX'])}
+      <div class="cs-section">
+        <p class="cs-section-label">Testing</p>
+        <p class="cs-section-title">Validated with real citizens</p>
+        <p class="cs-body">Usability sessions with citizens in Bloomington, Indiana — the platform's pilot city — included the full cross-functional squad. Findings shaped the information hierarchy, Compass onboarding, and authentication prompts.</p>
+      </div>
+
+      <div class="cs-section">
+        <p class="cs-section-label">Impact</p>
+        <div class="cs-stats">
+          <div class="cs-stat">
+            <p class="cs-stat-num">0 sec</p>
+            <p class="cs-stat-label">Login required to get value</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">3</p>
+            <p class="cs-stat-label">Core data points surfaced instantly on every profile</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">100%</p>
+            <p class="cs-stat-label">Non-partisan visual treatment across all profiles</p>
+          </div>
+          <div class="cs-stat">
+            <p class="cs-stat-num">Live</p>
+            <p class="cs-stat-label">In active development and testing on the Empowered Vote platform</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-section">
+        <p class="cs-section-label">Reflection</p>
+        <p class="cs-section-title">Designing for trust as a material</p>
+        <p class="cs-body">Trust had to be earned in every visual and content choice — there was no assumed goodwill. Incomplete politician data reinforced designing for what exists, not what we wished we had.</p>
+        <p class="cs-body">Next up: extending the same principles of speed, neutrality, and trust into a native mobile app.</p>
+      </div>
+
+      ${csGoToTopHTML()}
+
     </div>
-    ${footerHTML()}`;
+    ${homeFooterHTML()}
+    </div>`;
 }
 
 export default empoweredHTML;
