@@ -975,7 +975,13 @@ import { navHTML, CS_PAGES } from './pages/shared.js';
     }
 
     function finishPageIntro(intro) {
-      if (intro) intro.remove();
+      // Guard against double-invocation: the animationend listener and a
+      // fallback timer can both fire for the same step on the same tick.
+      if (intro && intro.dataset.finished === '1') return;
+      if (intro) {
+        intro.dataset.finished = '1';
+        intro.remove();
+      }
       document.body.classList.remove('intro-active');
       try { sessionStorage.setItem('introPlayed', '1'); } catch (e) {}
       if (currentRoute() === 'home') {
@@ -1006,6 +1012,47 @@ import { navHTML, CS_PAGES } from './pages/shared.js';
       const progressFill = intro.querySelector('.page-intro__progress-fill');
       const wipe = intro.querySelector('.page-intro__wipe');
 
+      // Each CSS animation in the chain is driven by an animationend
+      // listener. Browsers occasionally drop or coalesce these events when
+      // multiple animations end on the same tick, which would leave the
+      // overlay stuck on screen (opacity:0 but still capturing clicks).
+      // Each step is paired with a setTimeout fallback slightly longer
+      // than its CSS duration, plus a final safety net that force-finishes
+      // the intro after the maximum chain length + buffer.
+      let finished = false;
+      const stepTimers = [];
+      const safetyTimer = window.setTimeout(function () {
+        forceFinish();
+      }, 6000);
+
+      function clearStepTimers() {
+        while (stepTimers.length) {
+          window.clearTimeout(stepTimers.pop());
+        }
+      }
+
+      function forceFinish() {
+        if (finished) return;
+        finished = true;
+        clearStepTimers();
+        window.clearTimeout(safetyTimer);
+        finishPageIntro(intro);
+      }
+
+      function advance(step) {
+        if (finished) return;
+        if (step === 'progress' && !intro.classList.contains('page-intro--progress')) {
+          intro.classList.add('page-intro--progress');
+        } else if (step === 'expand' && !intro.classList.contains('page-intro--expand')) {
+          intro.classList.add('page-intro--expand');
+        } else if (step === 'fadeOut' && !intro.classList.contains('page-intro--fadeOut')) {
+          intro.classList.add('page-intro--fadeOut');
+          startHeroEntrance();
+        } else if (step === 'finish') {
+          forceFinish();
+        }
+      }
+
       requestAnimationFrame(function () {
         intro.classList.add('page-intro--zoom');
       });
@@ -1013,27 +1060,30 @@ import { navHTML, CS_PAGES } from './pages/shared.js';
       title.addEventListener('animationend', function onZoomEnd(e) {
         if (e.animationName !== 'introZoom') return;
         title.removeEventListener('animationend', onZoomEnd);
-        intro.classList.add('page-intro--progress');
+        advance('progress');
       });
+      stepTimers.push(window.setTimeout(function () { advance('progress'); }, 1200));
 
       progressFill.addEventListener('animationend', function onProgressEnd(e) {
         if (e.animationName !== 'introProgressFill') return;
         progressFill.removeEventListener('animationend', onProgressEnd);
-        intro.classList.add('page-intro--expand');
+        advance('expand');
       });
+      stepTimers.push(window.setTimeout(function () { advance('expand'); }, 3000));
 
       wipe.addEventListener('animationend', function onWipeEnd(e) {
         if (e.animationName !== 'introWipeExpand') return;
         wipe.removeEventListener('animationend', onWipeEnd);
-        intro.classList.add('page-intro--fadeOut');
-        startHeroEntrance();
+        advance('fadeOut');
       });
+      stepTimers.push(window.setTimeout(function () { advance('fadeOut'); }, 4000));
 
       intro.addEventListener('animationend', function onFadeOutEnd(e) {
         if (e.animationName !== 'introFadeOut') return;
         intro.removeEventListener('animationend', onFadeOutEnd);
-        finishPageIntro(intro);
+        advance('finish');
       });
+      stepTimers.push(window.setTimeout(function () { advance('finish'); }, 4800));
     }
 
     // ── Boot
