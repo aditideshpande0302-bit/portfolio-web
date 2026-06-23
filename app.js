@@ -684,6 +684,17 @@ import { navHTML, CS_PAGES } from './pages/shared.js';
       aidesign:  'AI Design - Case Study - Aditi Deshpande',
     };
 
+    function trackPageView(page) {
+      if (typeof gtag !== 'function') return;
+      const title = PAGE_TITLES[page] || PAGE_TITLES.home;
+      const path = page === 'home' ? '/' : '/' + page;
+      gtag('event', 'page_view', {
+        page_title: title,
+        page_path: path,
+        page_location: window.location.href,
+      });
+    }
+
     let _renderToken = 0;
     async function render(page) {
       const token = ++_renderToken;
@@ -709,6 +720,7 @@ import { navHTML, CS_PAGES } from './pages/shared.js';
         teardownAboutScroll();
         setHomeNavHeight();
       }
+      trackPageView(page);
     }
 
 
